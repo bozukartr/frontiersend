@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frontier’s End Wiki</title>
+  <meta name="description" content="Frontier’s End oyun rehberi: takıldığın şeyi sor, cevabını bul. Game guide for Frontier’s End: ask and find the answer.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f2ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#15120f" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/rye-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/wiki.css">
+</head>
+<body data-mode="home">
+  <header class="bar">
+    <a class="all-link" href="#/topics" data-t="allTopics">Tüm konular</a>
+    <div class="lang" role="group" aria-label="Dil / Language">
+      <button type="button" data-lang="tr">TR</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div class="brand-block">
+      <a class="brand" href="#/" aria-label="Frontier’s End Wiki">
+        <img class="emblem" src="assets/img/logo.svg" alt="" width="76" height="76">
+        <span class="word">Frontier’s End</span>
+        <span class="badge" lang="en">Wiki</span>
+      </a>
+      <p class="tagline" data-t="tagline">Oyunda takıldığın her şeyi sor.</p>
+    </div>
+
+    <form class="search" role="search" autocomplete="off">
+      <svg class="ico s-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" name="q" spellcheck="false" enterkeyhint="search"
+             role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggest">
+      <button class="clear" type="button" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <button class="go" type="submit"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg></button>
+      <ul id="suggest" class="suggest" role="listbox" hidden></ul>
+    </form>
+
+    <div class="faq" aria-label="Sık sorulanlar"></div>
+
+    <div id="view" aria-live="polite"></div>
+  </main>
+
+  <footer class="foot">
+    <span data-t="footer">Frontier’s End oyun rehberi</span>
+    <span class="dot">·</span>
+    <a href="#/topics" class="foot-topics"></a>
+  </footer>
+
+  <div class="toast" role="status" hidden></div>
+
+  <noscript><p style="text-align:center">Bu rehber JavaScript gerektirir. / This guide needs JavaScript.</p></noscript>
+
+  <script src="assets/data/concepts.js"></script>
+  <script src="assets/data/articles-basics.js"></script>
+  <script src="assets/data/articles-survival.js"></script>
+  <script src="assets/data/articles-horse.js"></script>
+  <script src="assets/data/articles-nature.js"></script>
+  <script src="assets/data/articles-money.js"></script>
+  <script src="assets/data/articles-business.js"></script>
+  <script src="assets/data/articles-law.js"></script>
+  <script src="assets/data/articles-life.js"></script>
+  <script src="assets/js/search.js"></script>
+  <script src="assets/js/app-data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
