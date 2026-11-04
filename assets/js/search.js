@@ -115,7 +115,7 @@
   /* ================= Yardımcılar ================= */
   const depthW = (d) => 1 - 0.05 * d;
   /* kısa kökler (at, su, ok…) yalnızca az ek ayıklanmışsa eşleşir */
-  const okPair = (stem, dq, da) => stem.length >= 4 || (stem.length === 3 ? dq + da <= 3 : dq + da <= 2);
+  const okPair = (stem, dq, da) => stem.length >= 4 || dq + da <= 2;
 
   function dl(a, b, max) {                    // Damerau-Levenshtein (optimal hizalama), erken kesmeli
     if (Math.abs(a.length - b.length) > max) return max + 1;
@@ -222,7 +222,7 @@
     for (const A of articles) {
       const entry = {};
       for (const L of LANGS) {
-        const terms = new Map(), conc = new Map();
+        const terms = new Map(), conc = new Map(), tdepth = new Map();
         const put = (map, k, w) => { if (!(map.get(k) >= w)) map.set(k, w); };
         for (const [f, fw] of FIELDS) {
           for (const text of fieldText(A, f, L)) {
@@ -248,6 +248,7 @@
               for (const [st, d] of cs) {
                 if (!okPair(st, 0, d)) continue;
                 put(terms, st, fw * depthW(d));
+                if (!(tdepth.get(st) <= d)) tdepth.set(st, d);
                 const hit = !inPhrase[i] && syn[L].get(st);
                 if (hit && !roots.some(r => r.length > st.length && r.startsWith(st))) for (const cid of hit) put(conc, cid, fw * depthW(d));
               }
@@ -255,7 +256,7 @@
           }
         }
         for (const t of A.tags || []) put(conc, t, TAG_W);
-        entry[L] = { terms, conc };
+        entry[L] = { terms, conc, tdepth };
         for (const k of terms.keys()) dfT[L].set(k, (dfT[L].get(k) || 0) + 1);
       }
       const cs = new Set([...entry.tr.conc.keys(), ...entry.en.conc.keys()]);
@@ -295,7 +296,7 @@
           for (let j = 0; j < best.len; j++) {
             const t = toks[i + j];
             if (isStop(L, t)) continue;
-            for (const [st, d] of cands(L, t)) if (dfT[L].has(st) && okPair(st, d, 0)) branches.push({ k: 't', stem: st, w: 0.45 * depthW(d), wi: j });
+            for (const [st, d] of cands(L, t)) if (dfT[L].has(st) && okPair(st, d, 0)) branches.push({ k: 't', stem: st, w: 0.45 * depthW(d), wi: j, d });
           }
           units.push({ text, phrase: true, branches, pos: i });
         }
@@ -315,7 +316,7 @@
         for (const [st, d] of cs) {
           const cs2 = syn[L].get(st);
           if (cs2 && okPair(st, d, 0)) for (const c of cs2) branches.push({ k: 'c', c, w: depthW(d), stem: st });
-          if (dfT[L].has(st) && okPair(st, d, 0)) branches.push({ k: 't', stem: st, w: depthW(d) });
+          if (dfT[L].has(st) && okPair(st, d, 0)) branches.push({ k: 't', stem: st, w: depthW(d), d });
         }
         // yazarken: son sözcüğün öneki
         if (last && t.length >= 2) {
@@ -323,19 +324,23 @@
             if (key.length <= t.length || !key.startsWith(t)) continue;
             const cs2 = syn[L].get(key);
             if (cs2) for (const c of cs2) branches.push({ k: 'c', c, w: 0.72, stem: key, pre: 1 });
-            if (dfT[L].has(key)) branches.push({ k: 't', stem: key, w: 0.7, pre: 1 });
+            if (dfT[L].has(key)) branches.push({ k: 't', stem: key, w: 0.7, pre: 1, d: 0 });
           }
         }
         // en uzun kök kuralı: sözcük sözlükteki bir köke (kazan) uyuyorsa, o kökün içinde kalan kısa kökler
         // (kaz) rastlantısaldır ve cezalandırılır. Aynı sözcüğün ekli biçimleri (evcilleştirilir → evcilleştir) etkilenmez.
-        const roots = branches.filter(b => !b.pre && b.k === 'c').map(b => b.stem);
+        const roots = [...new Set(branches.filter(b => !b.pre && b.k === 'c').map(b => b.stem))];
         for (const b of branches) {
           if (b.pre) continue;
-          if (roots.some(s => s.length > b.stem.length && s.startsWith(b.stem))) b.w *= 0.55;
+          const longer = roots.filter(r => r.length > b.stem.length && r.startsWith(b.stem));
+          if (!longer.length) continue;
+          // kısa kök aynı kavramı taşıyorsa (atım → at) gerçek bir ek ayıklamasıdır, cezalandırılmaz
+          const mine = syn[L].get(b.stem);
+          if (!mine || !longer.some(r => [...syn[L].get(r)].some(c => mine.has(c)))) b.w *= 0.55;
         }
         let fixed = null;
         // yazım hatası dalı
-        if (!branches.length && t.length >= 4 && !/^\d+$/.test(t)) {
+        if (!branches.length && t.length >= 5 && !/^\d+$/.test(t)) {
           const max = t.length >= 8 ? 2 : 1;
           let hits = [];
           // önce sözcüğün kendisi, olmazsa tek ek ayıklanmış biçimi (kısa kökler yanıltır: bal → bas)
@@ -355,7 +360,7 @@
           for (const key of hits) {
             const cs2 = syn[L].get(key);
             if (cs2) for (const c of cs2) branches.push({ k: 'c', c, w: 0.7, stem: key, fuzzy: 1 });
-            if (dfT[L].has(key)) branches.push({ k: 't', stem: key, w: 0.68, fuzzy: 1 });
+            if (dfT[L].has(key)) branches.push({ k: 't', stem: key, w: 0.68, fuzzy: 1, d: 0 });
           }
           if (hits.length) fixed = synSurface[L].get(hits[0]) || vocab[L].get(hits[0]) || hits[0];
         }
@@ -389,7 +394,9 @@
             let v = 0, fw = 0;
             if (b.k === 'c') { fw = I.conc.get(b.c) || 0; v = b.w * idfC(b.c) * fw; if (v > bc) bc = v; }
             else {
-              fw = I.terms.get(b.stem) || 0; v = b.w * idfT(L, b.stem) * fw;
+              // kısa köklerde iki taraftaki ek derinliğinin toplamı sınırlıdır (uzay → uz ≠ uzun → uz)
+              fw = b.stem.length >= 4 || okPair(b.stem, b.d || 0, I.tdepth.get(b.stem) || 0) ? I.terms.get(b.stem) || 0 : 0;
+              v = b.w * idfT(L, b.stem) * fw;
               if (b.wi != null) { if (v > (perWord[b.wi] || 0)) perWord[b.wi] = v; } else if (v > bt) bt = v;
             }
             if (v > 0 && fw > bestField) bestField = fw;
@@ -460,14 +467,13 @@
     /* ================= 7. Vurgu ve en iyi cümle ================= */
     function queryStems(q, L) {
       const parsed = parse(q, L, false);
-      const stems = new Set(), conc = new Set();
+      const stems = new Set();
+      // yalnızca sorgunun kendi sözcükleri (ve düzeltilmiş biçimleri) vurgulanır; eş anlamlıların hepsi değil
       for (const u of parsed.units) for (const b of u.branches) {
-        if (b.rel) continue;
-        if (b.k === 't') stems.add(b.stem);
-        else conc.add(b.c);
+        if (b.rel || b.pre) continue;
+        if (b.k === 't' && (b.wi != null || b.w >= 0.6)) stems.add(b.stem);
+        else if (b.k === 'c' && b.w >= 0.6 && !/\s/.test(b.stem)) stems.add(b.stem);
       }
-      // kavramın bu dildeki eş anlamlıları da vurgulanır
-      for (const [k, cs] of syn[L]) for (const c of cs) if (conc.has(c)) stems.add(k);
       return stems;
     }
     function wordHits(word, L, stems) {
