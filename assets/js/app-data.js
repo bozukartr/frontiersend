@@ -64,6 +64,10 @@
         dbHint: 'Bu sayfalar oyunun kendi verisinden üretilir; oyun güncellenince onlar da güncellenir.',
         dbNote: (v) => `Oyunun verisinden üretildi (sürüm ${v}).`,
         priceNote: 'Fiyatlar temel fiyattır; ticaret yeteneği, onur, kazanımlar ve dükkân sahibinin sana bakışı fiyatı değiştirir.',
+        mapLink: 'Harita',
+        showOnMap: 'Haritada göster',
+        mapNote: (seed, px, v) => `Örnek dünya (tohum ${seed}), en yakın görünümde ${px.toLocaleString('tr-TR')} × ${px.toLocaleString('tr-TR')} piksel · oyun sürümü ${v}`,
+        mapUi: { label: 'Dünya haritası', zoomIn: 'Yakınlaştır', zoomOut: 'Uzaklaştır', fit: 'Tamamını göster', full: 'Tam ekran' },
       },
       en: {
         htmlTitle: 'Frontier’s End Wiki',
@@ -98,6 +102,10 @@
         dbHint: 'These pages are generated from the game’s own data, so they update when the game does.',
         dbNote: (v) => `Generated from the game data (version ${v}).`,
         priceNote: 'Prices are base prices; your Trade skill, honor, perks and how the shopkeeper sees you change them.',
+        mapLink: 'Map',
+        showOnMap: 'Show on the map',
+        mapNote: (seed, px, v) => `Example world (seed ${seed}), ${px.toLocaleString('en-US')} × ${px.toLocaleString('en-US')} pixels at the closest zoom · game version ${v}`,
+        mapUi: { label: 'World map', zoomIn: 'Zoom in', zoomOut: 'Zoom out', fit: 'Show all', full: 'Full screen' },
       },
     },
   };

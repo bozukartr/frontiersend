@@ -28,7 +28,30 @@ oyunun diliyle (`?lang=tr` ya da `?lang=en`) açar.
   “arap atı kaç para”, “bear pelt price” gibi sorular doğrudan bu sayfalara gider. Makalelerde kalın yazılan
   adlar (**Kinin**, **Mustang**) kendi sayfasına bağlanır.
 - Açık ve koyu tema (sistem ayarını izler), telefon genişliğinde de düzgün.
+- **Dünya haritası** (`#/map`, üst çubukta “Harita”): bütün dünya, oyunun kendi harita çiziminde; en yakın
+  görünümde 12.288 × 12.288 piksel. Sürükleyerek, tekerlekle, iki parmakla, düğmelerle ya da klavyeyle (+ − 0, ok
+  tuşları) gezilir, tam ekran açılır. Kasabalar, önemli yerler, çiftlikler, haydut kampları ve satılık mülkler
+  iki dilde, tıklanabilir işaretlerdir; kasaba ve yer sayfalarında **Haritada göster** düğmesi o noktaya götürür
+  (`#/map/town-harlow`).
 - Hikâye bölümleri yoktur; metinler oyunun kurallarına dayanır ama oyundan birebir alınmamış, sadeleştirilmiştir.
+
+## Dünya haritası nasıl üretilir?
+
+Oyun deposunda `node tools/wiki-map.js` (wiki deposu oyunun yanında klonlu olmalı; `--root <klasör>`, `--seed`,
+`--scale`, `--quality`). Araç oyunu başsız tarayıcıda açar, dünyayı sabit bir tohumla (1890) oyunun kendi
+üreticisiyle kurar ve haritayı oyunun harita çizimiyle (kâğıt dokusu, kıyı mürekkebi, eş yükselti çizgileri,
+binalar, yollar, patikalar, demiryolları, mil ızgarası, bölge adları) döşemeler hâlinde çizer:
+
+- `assets/map/<düzey>/<x>-<y>.webp`: 512 piksellik döşemeler, 6 düzey (384 pikselden 12.288 piksele; yaklaşık 23 MB).
+  Her düzey kendi ölçeğinde çizilir, çizgiler uzaktan da okunur kalır.
+- `assets/data/map.js`: döşeme bilgisi, bölge adları ve işaretler (iki dilde ad, konum, bağlantı, oyunun simgesi).
+- `assets/js/map.js`: görüntüleyici. Ekranda kalan döşemeleri yükler, en küçük düzey hep altta durur; en
+  ayrıntılı düzeyden de yakına gidilince pikseller keskin büyür.
+
+Dünya her yeni hayatta farklı üretilir. Kasabaların ve satılık mülklerin yeri hemen hemen aynıdır; önemli yerler,
+kamplar ve çiftlikler aynı bölgede kalır ama birkaç mil kayabilir; kıyının, göllerin, nehir kıvrımlarının ve
+yolların ayrıntısı değişir. Sayfa bunu söyler. Harita yalnız dünya üretimi ya da harita çizimi değişince
+yeniden üretilmelidir (her üretim depoya yeni döşemeler ekler).
 
 ## Oyun verisi: tek kaynak
 
@@ -90,11 +113,14 @@ index.html                 tek sayfa
 assets/css/wiki.css        görünüm
 assets/js/search.js        arama motoru (tarayıcıda ve Node'da çalışır)
 assets/js/gamedata.js      oyun verisinden yer tutucular ve veri sayfaları (tarayıcıda ve Node'da çalışır)
+assets/js/map.js           dünya haritası görüntüleyici
 assets/js/app.js           arayüz: yönlendirme, öneriler, sonuç ve makale görünümü
 assets/js/app-data.js      kategoriler, hazır sorular, arayüz metinleri (TR/EN)
 assets/data/concepts.js    kavram sözlüğü (TR/EN eş anlamlılar)
 assets/data/articles-*.js  makaleler, kategori kategori
 assets/data/game.js        oyunun verisi (OTOMATİK ÜRETİLİR; dustbound: node tools/wiki-export.js)
+assets/data/map.js         dünya haritasının işaretleri (OTOMATİK ÜRETİLİR; dustbound: node tools/wiki-map.js)
+assets/map/                dünya haritasının döşemeleri (OTOMATİK ÜRETİLİR)
 assets/img/                logo ve sekme simgesi
 assets/fonts/              Rye yazı tipi (SIL Open Font License, bkz. Rye-OFL.txt)
 tests/                     veri, arama kalitesi ve tarayıcı testleri

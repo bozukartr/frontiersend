@@ -102,6 +102,31 @@ ok(WD.moneyRange(1.6, 2.8, 'tr') === '$1,60–2,80' && WD.moneyRange(0.5, 2, 'en
   ok(WD.fillText('{{$:yok.p}} {{$:n}}', g, 'tr', e) === '? ?' && e.length === 2, 'çözülemeyen yer tutucu "?" olur ve bildirilir');
 }
 
+/* ---------------- 1c. Dünya haritası ---------------- */
+console.log('Dünya haritası');
+{
+  const fs = require('fs');
+  const MAP = require(path.join(root, 'data', 'map.js'));
+  const T = MAP.tiles;
+  ok(T.levels === T.sizes.length && T.sizes[T.levels - 1] === MAP.world * T.scale, 'döşeme düzeyleri ve en büyük boyut');
+  let missing = 0, count = 0;
+  T.sizes.forEach((L, z) => {
+    const n = Math.ceil(L / T.size);
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { count++; if (!fs.existsSync(path.join(__dirname, '..', T.path, String(z), `${x}-${y}.${T.ext}`))) missing++; }
+  });
+  ok(!missing, `bütün döşemeler var (${count - missing}/${count})`);
+  const kinds = {};
+  for (const m of MAP.marks) {
+    kinds[m.kind] = (kinds[m.kind] || 0) + 1;
+    ok(allIds.has(m.link), `harita işareti ${m.id}: bağlantı yok: ${m.link}`);
+    ok(m.n.tr && m.n.en, `harita işareti ${m.id}: iki dilde ad`);
+    ok(m.x >= 0 && m.y >= 0 && m.x <= MAP.world && m.y <= MAP.world, `harita işareti ${m.id}: dünyanın içinde`);
+    if (m.icon) ok(MAP.icons[m.icon] && /^<svg/.test(MAP.icons[m.icon]), `harita işareti ${m.id}: simge ${m.icon}`);
+  }
+  ok(kinds.town === GAME.towns.length && kinds.landmark === GAME.landmarks.length, `bütün kasabalar ve önemli yerler haritada (${kinds.town}, ${kinds.landmark})`);
+  ok(articles.some(A => A.id === 'worldmap' && A.map), 'dünya haritası konusu');
+}
+
 /* ---------------- 2. Kök ve normalleştirme ---------------- */
 console.log('Kökler');
 const has = (m, s) => m.has(s);
@@ -334,6 +359,11 @@ CASES.push(
   ['altın külçe', 'tr', 'item-gold_bar', 1],
   ['uyku tulumu', 'tr', ['item-bedroll', 'camp'], 1],
   ['olta nereden alınır', 'tr', ['fishing', 'item-fishing_rod'], 2],
+  // dünya haritası
+  ['dünya haritası', 'tr', 'worldmap', 1],
+  ['haritanın tamamı', 'tr', 'worldmap', 1],
+  ['world map', 'en', 'worldmap', 1],
+  ['harita nasıl açılır', 'tr', 'map', 1],
 );
 for (const [q, lang, exp, rank] of CASES) {
   const r = E.search(q, { lang });

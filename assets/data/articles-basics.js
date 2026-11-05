@@ -402,6 +402,40 @@
       rel: ['explore', 'binoculars', 'train'],
     },
     {
+      /* map: makalenin içinde yakınlaştırılabilir dünya haritası gösterilir (assets/js/map.js, assets/data/map.js) */
+      id: 'worldmap', cat: 'basics', tags: ['map', 'town', 'explore'], map: true,
+      title: { tr: 'Dünya haritası', en: 'World map' },
+      chip: { tr: 'Dünya haritası', en: 'World map' },
+      q: {
+        tr: ['dünya haritası', 'haritanın tamamı', 'büyük harita', 'harita görseli', 'kasabalar nerede', 'önemli yerler nerede', 'bütün harita'],
+        en: ['world map', 'full map', 'whole map', 'big map', 'map image', 'where are the towns', 'where are the landmarks'],
+      },
+      a: {
+        tr: 'Bütün dünya, oyunun kendi harita çiziminde. Sürükleyerek gez, tekerlekle ya da iki parmakla yakınlaştır; bir kasabaya ya da yere tıklayınca sayfası açılır.',
+        en: 'The whole world, drawn in the game’s own map style. Drag to move around, zoom with the wheel or two fingers; click a town or place to open its page.',
+      },
+      stepsTitle: { tr: 'Haritayı okumak', en: 'Reading the map' },
+      steps: {
+        tr: [
+          'Çift çizgi ana yol, kesikli çizgi patika, traversli siyah çizgi demiryoludur. Izgaranın her karesi iki mildir (uzaktan bakınca dört).',
+          'Kasabaların ve satılık mülklerin yeri her hayatta neredeyse aynıdır.',
+          'Önemli yerler, haydut kampları (kırmızı) ve çiftlikler hep aynı bölgededir ama yeni bir hayatta birkaç mil kayabilir.',
+          'Kıyının, göllerin, nehir kıvrımlarının ve yolların ayrıntısı her dünyada biraz farklıdır: bu harita örnek bir dünyadır.',
+        ],
+        en: [
+          'A double line is a main road, a dashed line is a trail and a black line with ties is the railroad. Each grid square is two miles (four when zoomed out).',
+          'Towns and properties for sale are almost always in the same place in every life.',
+          'Landmarks, bandit camps (red) and farms are always in the same area, but in a new life they can shift by a few miles.',
+          'The details of the coast, lakes, river bends and roads differ a little in every world: this map shows an example world.',
+        ],
+      },
+      tips: {
+        tr: ['Oyunda haritayı [[M]] ile açarsın; orada yalnızca gezdiğin yerler görünür.'],
+        en: ['In the game, [[M]] opens the map; it only shows the places you have explored.'],
+      },
+      rel: ['map', 'explore', 'towns'],
+    },
+    {
       id: 'newgame', cat: 'basics', tags: ['newgame', 'difficulty', 'aging'],
       title: { tr: 'Yeni hayat: geçmiş, zorluk ve yaşlanma hızı', en: 'New life: background, difficulty and aging pace' },
       chip: { tr: 'Yeni hayat', en: 'New life' },

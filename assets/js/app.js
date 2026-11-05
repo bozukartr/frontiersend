@@ -15,6 +15,9 @@
   const ENGINE = window.WikiSearch.create(ARTICLES, window.WIKI_CONCEPTS || {});
   const byId = new Map(ARTICLES.map(a => [a.id, a]));
   const NAMES = DATA ? DATA.nameIndex(ENT, window.WikiSearch.fold) : null;
+  /* dünya haritası (assets/data/map.js + assets/js/map.js): işareti olan sayfalar "Haritada göster" der */
+  const MAP = window.WIKI_MAP && window.WikiMap ? window.WIKI_MAP : null;
+  const onMap = new Set(MAP ? MAP.marks.map(m => m.link) : []);
 
   const $ = (s, r = document) => r.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -105,7 +108,7 @@
       ${catLabel(A)}
       <h2><a href="#/a/${A.id}">${esc(A.title[lang])}</a></h2>
       <p class="lead">${r(A.a[lang], q)}</p>
-      ${bodyHtml(A, q)}
+      ${A.map && MAP ? `<a class="wm-thumb" href="#/a/${A.id}"><img src="${MAP.tiles.path}/0/0-0.${MAP.tiles.ext}" alt="" width="${MAP.tiles.sizes[0]}" height="${MAP.tiles.sizes[0]}"></a>` : bodyHtml(A, q)}
       <a class="more" href="#/a/${A.id}">${esc(T().readMore)}${ico('arrow')}</a>
     </section>`;
     here = '';
@@ -157,7 +160,7 @@
     view.innerHTML = html;
   }
 
-  function showArticle(id) {
+  function showArticle(id, focus) {
     body.dataset.mode = 'view';
     const A = byId.get(id);
     const t = T();
@@ -170,21 +173,29 @@
     const rel = (A.rel || []).map(x => byId.get(x)).filter(Boolean);
     here = A.id;
     const money = A.entity && A.facts[lang].some(([, v]) => /[$¢]/.test(v));
-    view.innerHTML = `<article class="article">
+    const map = A.map && MAP;
+    view.innerHTML = `<article class="article${map ? ' wide' : ''}">
       ${catLabel(A)}
       <h1>${esc(A.title[lang])}</h1>
       <p class="lead">${r(A.a[lang], q)}</p>
-      ${A.entity ? factsHtml(A, q) : `<h3>${esc(t.steps)}</h3>${stepsHtml(A, q)}`}
+      ${map ? `<div class="wm-wrap"></div><p class="wm-note">${esc(t.mapNote(MAP.meta.seed, MAP.tiles.sizes[MAP.tiles.sizes.length - 1], MAP.meta.version))}</p>` : ''}
+      ${A.entity ? factsHtml(A, q) : `<h3>${esc((A.stepsTitle && A.stepsTitle[lang]) || t.steps)}</h3>${stepsHtml(A, q)}`}
       ${tips.length ? `<h3>${esc(t.tips)}</h3><ul class="tips">${tips.map(s => `<li>${r(s, q)}</li>`).join('')}</ul>` : ''}
       ${A.entity ? `<p class="dbnote">${money ? esc(t.priceNote) + ' ' : ''}${esc(t.dbNote(G.meta.version))}</p>` : ''}
       ${rel.length ? `<h3>${esc(t.related)}</h3><div class="rel">${rel.map(R => `<a class="chip" href="#/a/${R.id}">${ico(CATS[R.cat].icon)}${esc(R.title[lang])}</a>`).join('')}</div>` : ''}
       <div class="actions">
         ${q ? `<a class="ghost" href="#/q/${enc(q)}">${ico('back')}${esc(t.back)}</a>` : ''}
+        ${onMap.has(A.id) ? `<a class="ghost onmap" href="#/map/${A.id}">${ico('pin')}${esc(t.showOnMap)}</a>` : ''}
         <button class="ghost copy" type="button">${ico('link')}${esc(t.copy)}</button>
       </div>
     </article>`;
     here = '';
     $('.copy', view).addEventListener('click', copyLink);
+    if (map) {
+      const M = byId.get(focus);
+      if (M) document.title = `${M.title[lang]} · ${A.title[lang]} · ${t.htmlTitle}`;
+      window.WikiMap.mount($('.wm-wrap', view), MAP, { lang, focus, ui: t.mapUi });
+    }
     window.scrollTo(0, 0);
   }
 
@@ -224,6 +235,7 @@
     try { arg = decodeURIComponent(arg); } catch (e) { /* bozuk adres */ }
     if (kind === 'q' && arg.trim()) showResults(arg);
     else if (kind === 'a' && arg) showArticle(arg);
+    else if (kind === 'map') showArticle('worldmap', arg);
     else if (kind === 'topics') showTopics(arg);
     else showHome();
   }

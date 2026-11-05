@@ -247,3 +247,63 @@ a.ent:hover { color: var(--accent); text-decoration-color: var(--accent); }
   * { transition: none !important; }
 }
 .dbcats #cat-db-item, .dbcats #cat-db-ach { grid-column: 1 / -1; }
+
+/* ---------- dünya haritası ---------- */
+.wm-wrap { margin: 18px 0 6px; }
+/* harita sayfası sütundan taşar: ekranın ortasında en çok 1160 piksel */
+.article.wide .wm-wrap, .article.wide .wm-note { width: min(1160px, calc(100vw - 32px)); margin-left: calc(50% - min(580px, 50vw - 16px)); }
+.wm {
+  position: relative; height: min(72vh, 680px); min-height: 320px; overflow: hidden; border-radius: 12px;
+  background: #3a2a1c; border: 1px solid var(--line); touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none;
+  outline: none; isolation: isolate;
+}
+.wm.drag { cursor: grabbing; }
+.wm:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 55%, transparent); }
+.wm:fullscreen { height: 100vh; border-radius: 0; border: 0; }
+.wm-base { position: absolute; left: 0; top: 0; transform-origin: 0 0; pointer-events: none; max-width: none; }
+.wm-tiles img { position: absolute; pointer-events: none; opacity: 0; transition: opacity .18s; max-width: none; }
+.wm-tiles img.ok { opacity: 1; }
+.wm.wm-px .wm-tiles img, .wm.wm-px .wm-base { image-rendering: pixelated; }
+.wm-marks { position: absolute; inset: 0; pointer-events: none; }
+.wm-m { position: absolute; left: 0; top: 0; pointer-events: auto; text-decoration: none; color: #2a1a0e; }
+.wm-m:focus-visible { outline: none; }
+.wm-lb { position: absolute; left: 0; white-space: nowrap; transform: translateX(-50%); }
+/* kasaba: koyu nokta, üstünde kâğıt etiket (oyunun haritasındaki gibi) */
+.wm-dot { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: #2a1a0e; box-shadow: 0 0 0 2px #efe2c0, 0 1px 3px 2px rgba(0, 0, 0, .3); }
+.wm-town .wm-lb {
+  bottom: 9px; padding: 2px 8px 3px; background: rgba(236, 224, 196, .93); border: 1px solid rgba(70, 44, 22, .7); border-radius: 2px;
+  font: 600 13px/1.2 Georgia, 'Times New Roman', serif; font-variant: small-caps; letter-spacing: .04em; box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+}
+.wm-sz-l .wm-lb { font-size: 15px; }
+.wm-sz-s .wm-lb { font-size: 12px; }
+/* yerler: koyu rozet içinde oyunun simgesi; adı yakınlaşınca ya da üstüne gelince */
+.wm-ic { position: absolute; left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: rgba(40, 24, 12, .9); box-shadow: 0 0 0 1.5px rgba(239, 226, 192, .9), 0 1px 3px 1px rgba(0, 0, 0, .35); }
+.wm-ic img { width: 14px; height: 14px; display: block; }
+.wm-k-camp .wm-ic { background: rgba(150, 20, 20, .9); }
+.wm-k-farm .wm-ic, .wm-k-property .wm-ic { left: -9px; top: -9px; width: 18px; height: 18px; }
+.wm-k-farm .wm-ic img, .wm-k-property .wm-ic img { width: 11px; height: 11px; }
+.wm-poi .wm-lb {
+  top: 13px; display: none; padding: 1px 6px; border-radius: 3px; background: rgba(236, 224, 196, .9);
+  font: italic 12.5px/1.25 Georgia, 'Times New Roman', serif; box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+}
+.wm[data-lv="2"] .wm-k-landmark .wm-lb, .wm[data-lv="3"] .wm-poi .wm-lb, .wm-m:hover .wm-lb, .wm-m:focus-visible .wm-lb, .wm-m.wm-on .wm-lb { display: block; }
+.wm-m:hover, .wm-m:focus-visible, .wm-m.wm-on { z-index: 3; }
+.wm[data-lv="0"] .wm-k-farm, .wm[data-lv="0"] .wm-k-property, .wm[data-lv="0"] .wm-k-camp, .wm[data-lv="xs"] .wm-poi { display: none; }
+.wm[data-lv="xs"] .wm-town .wm-lb { font-size: 10.5px; padding: 1px 5px 2px; bottom: 7px; }
+.wm[data-lv="xs"] .wm-dot { left: -4px; top: -4px; width: 8px; height: 8px; }
+.wm-town { z-index: 1; }
+.wm-m:hover .wm-ic, .wm-m:focus-visible .wm-ic { box-shadow: 0 0 0 2px #e6c47a, 0 1px 3px 1px rgba(0, 0, 0, .35); }
+.wm-on .wm-ic, .wm-on .wm-dot { animation: wmPulse 1.6s ease-in-out infinite; }
+@keyframes wmPulse { 0%, 100% { box-shadow: 0 0 0 2px #e6c47a, 0 0 0 5px rgba(230, 196, 122, .35); } 50% { box-shadow: 0 0 0 2px #e6c47a, 0 0 0 11px rgba(230, 196, 122, 0); } }
+.wm-ctl { position: absolute; right: 10px; top: 10px; display: flex; flex-direction: column; gap: 6px; z-index: 3; }
+.wm-ctl button {
+  width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border-radius: 10px; cursor: pointer;
+  border: 1px solid rgba(60, 36, 18, .45); background: rgba(246, 238, 220, .95); color: #2a1a0e; box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+}
+.wm-ctl button:hover { background: #fffaf0; }
+.wm-ctl svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.wm-note { margin: 8px 2px 0; font-size: 13px; color: var(--faint); }
+.wm-thumb { display: block; width: min(100%, 384px); margin: 16px 0 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+.wm-thumb img { display: block; width: 100%; height: auto; }
+@media (max-width: 560px) { .wm { height: 62vh; } }
+@media (prefers-reduced-motion: reduce) { .wm-on .wm-ic, .wm-on .wm-dot { animation: none; box-shadow: 0 0 0 3px #e6c47a; } }
