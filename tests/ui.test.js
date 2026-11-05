@@ -8,7 +8,7 @@ const path = require('path');
 const { chromium } = require('playwright');
 
 const ROOT = path.join(__dirname, '..');
-const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.txt': 'text/plain; charset=utf-8' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.txt': 'text/plain; charset=utf-8', '.webp': 'image/webp' };
 
 let fail = 0, pass = 0;
 const ok = (c, m) => { if (c) pass++; else { fail++; console.log('  ✗ ' + m); } };
@@ -126,6 +126,53 @@ const ok = (c, m) => { if (c) pass++; else { fail++; console.log('  ✗ ' + m); 
     ok(await p.locator('#cat-db-item h3').count() >= 8, 'eşyalar türlerine göre gruplanır');
     ok(/\d{3} konu/.test(await p.locator('.foot-topics').innerText()), 'alt bilgide toplam konu sayısı');
 
+    console.log('Dünya haritası');
+    p = await page({ locale: 'tr-TR' });
+    await p.goto(base + 'index.html?lang=tr#/map');
+    await p.waitForSelector('.wm');
+    await p.waitForFunction(() => document.querySelectorAll('.wm-tiles img.ok').length > 0 && document.querySelector('.wm-base').complete, null, { timeout: 10000 });
+    const nMarks = await p.evaluate(() => window.WIKI_MAP.marks.length);
+    ok(await p.locator('.wm-m').count() === nMarks, `bütün işaretler (${nMarks})`);
+    ok((await p.locator('.article h1').innerText()) === 'Dünya haritası', 'üst çubuktaki Harita bağlantısı dünya haritasını açar');
+    const view = () => p.evaluate(() => { const s = getComputedStyle(document.querySelector('.wm-base')).transform; return { lv: document.querySelector('.wm').dataset.lv, t: s }; });
+    const v0 = await view();
+    await p.click('.wm-ctl [data-z="plus"]');
+    await p.waitForTimeout(200);
+    const v1 = await view();
+    ok(v1.t !== v0.t, 'yakınlaştır düğmesi');
+    const box = await p.locator('.wm').boundingBox();
+    await p.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    for (let i = 0; i < 8; i++) await p.mouse.wheel(0, -300);
+    await p.waitForTimeout(300);
+    ok((await view()).lv === '3', 'tekerlekle en yakına kadar');
+    const before = await view();
+    await p.mouse.down(); await p.mouse.move(box.x + box.width / 2 - 160, box.y + box.height / 2 - 60, { steps: 6 }); await p.mouse.up();
+    await p.waitForTimeout(200);
+    ok((await view()).t !== before.t, 'sürükleyerek kaydırma');
+    ok(/#\/map$/.test(p.url()), 'sürükleme bağlantı açmaz');
+    await p.waitForFunction(() => [...document.querySelectorAll('.wm-tiles img')].some(i => /\/5\//.test(i.src) && i.complete), null, { timeout: 10000 });
+    ok(true, 'en ayrıntılı döşemeler yüklenir');
+    // kasaba sayfasından haritaya, haritadan sayfaya
+    await p.goto(base + 'index.html?lang=tr#/a/town-harlow');
+    await p.waitForSelector('.article .onmap');
+    await p.click('.article .onmap');
+    await p.waitForSelector('.wm-m.wm-on', { state: 'attached' });
+    // odaklanma bir sonraki karede çizilir: işaret görünümün ortasına gelene kadar beklenir
+    const centered = await p.waitForFunction(() => {
+      const b = document.querySelector('.wm').getBoundingClientRect(), e = document.querySelector('.wm-m.wm-on'), m = e.getBoundingClientRect();
+      return e.dataset.link === 'town-harlow' && Math.abs(m.left - (b.left + b.width / 2)) < 3 && Math.abs(m.top - (b.top + b.height / 2)) < 3;
+    }, null, { timeout: 5000 }).then(() => true, () => false);
+    ok(centered, 'Haritada göster: kasaba ortada ve vurgulu');
+    await p.click('.wm-m.wm-on .wm-dot');
+    await p.waitForFunction(() => /#\/a\/town-harlow$/.test(location.hash));
+    ok(true, 'işarete tıklayınca kasaba sayfası açılır');
+    await p.goto(base + 'index.html?lang=en#/map/place-crater');
+    await p.waitForSelector('.wm-m.wm-on', { state: 'attached' });
+    ok((await p.locator('.wm-m.wm-on .wm-lb').innerText()) === 'Meteor Crater', 'İngilizce işaret adı');
+    await p.goto(base + 'index.html?lang=tr#/a/item-quinine');
+    await p.waitForSelector('.article h1');
+    ok(await p.locator('.article .onmap').count() === 0, 'haritada olmayan sayfada düğme yok');
+
     console.log('Telefon');
     p = await page({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
     await p.goto(base + 'index.html?lang=tr#/q/' + encodeURIComponent('kamp nasıl kurulur'));
@@ -136,6 +183,10 @@ const ok = (c, m) => { if (c) pass++; else { fail++; console.log('  ✗ ' + m); 
     await p.waitForSelector('.article .facts');
     const over2 = await p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     ok(over2 <= 0, `veri sayfasında yatay kaydırma yok (${over2}px)`);
+    await p.goto(base + 'index.html?lang=tr#/map');
+    await p.waitForSelector('.wm');
+    const over3 = await p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    ok(over3 <= 0, `haritada yatay kaydırma yok (${over3}px)`);
   } catch (e) {
     fail++; console.log('  ✗ ' + e.message);
   }
