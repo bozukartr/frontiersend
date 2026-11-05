@@ -49,13 +49,13 @@
       steps: {
         tr: [
           'Malı toptancı ambarından, limandan, değirmenden, imalathaneden, madenden ya da çiftlikten sandıkla al.',
-          'Omzunda 1, atında 2, **yük arabasında** 8 sandık taşırsın.',
+          'Omzunda 1, atında 2, **yük arabasında** {{#:c.WAGON_CAP}} sandık taşırsın.',
           'Kasaba avladığın hayvanın leşini de götürebilirsin.',
           'Ahır ya da postaneden en fazla 4 nakliyeci tut (peşin $10 + günlük ücret); stoğu azalan işletmeye malı kendileri götürür.',
         ],
         en: [
           'Buy crates at the wholesale warehouse, docks, mill, brewery, mine or farm.',
-          'You carry 1 crate on your shoulder, 2 on your horse and 8 in a **freight wagon**.',
+          'You carry 1 crate on your shoulder, 2 on your horse and {{#:c.WAGON_CAP}} in a **freight wagon**.',
           'You can also bring carcasses from your hunts to a butcher shop.',
           'Hire up to 4 haulers at a stable or post office ($10 up front plus a daily wage); they deliver to whichever business runs low.',
         ],
@@ -75,19 +75,19 @@
         en: ['how do I buy a lot', 'what can I build on a lot', 'how to build a new business', 'what does the luxury design do'],
       },
       a: {
-        tr: 'Kasabalarda çitle çevrili, tabelalı **satılık arsalar** vardır (haritada “$”). Arsayı alınca ona sığan herhangi bir işletmeyi **3 günde** yaptırırsın; bina gerçekten kasabada yükselir.',
-        en: 'Towns have fenced **lots for sale** with a sign (shown as “$” on the map). Once you own one, you can have any business that fits built there in **3 days**; the building actually rises in town.',
+        tr: 'Kasabalarda çitle çevrili, tabelalı **satılık arsalar** vardır (haritada “$”). Arsayı alınca ona sığan herhangi bir işletmeyi **{{#:c.BUILD_DAYS}} günde** yaptırırsın; bina gerçekten kasabada yükselir.',
+        en: 'Towns have fenced **lots for sale** with a sign (shown as “$” on the map). Once you own one, you can have any business that fits built there in **{{#:c.BUILD_DAYS}} days**; the building actually rises in town.',
       },
       steps: {
         tr: [
           'Önce türü, sonra dört tasarımdan birini seç.',
-          '**Ekonomik** (×0,75 fiyat), **Normal**, **Gelişmiş** (×1,4) ve **Lüks** (×2).',
+          '**Ekonomik** ({{x:home.tiers.eco.k}} fiyat), **Normal**, **Gelişmiş** ({{x:home.tiers.adv.k}}) ve **Lüks** ({{x:home.tiers.lux.k}}).',
           'Tasarım yalnızca görünümü ve fiyatı değiştirir; gelir ve süre aynıdır.',
           'Menü her tasarımın dışını ve içini önizler.',
         ],
         en: [
           'Choose the type first, then one of four designs.',
-          '**Budget** (×0.75 price), **Normal**, **Fine** (×1.4) and **Luxury** (×2).',
+          '**Budget** ({{x:home.tiers.eco.k}} price), **Normal**, **Fine** ({{x:home.tiers.adv.k}}) and **Luxury** ({{x:home.tiers.lux.k}}).',
           'The design only changes looks and price; income and build time stay the same.',
           'The menu previews each design inside and out.',
         ],
@@ -107,18 +107,18 @@
         en: ['how do I get a monopoly', 'what is market share', 'how to buy a shop that is not for sale', 'buying out a rival', 'trade chamber fine'],
       },
       a: {
-        tr: 'İşletmeler sektörlere ayrılır (gıda, içki ve eğlence, hizmet, demir ve ahır, konaklama, bankacılık, petrol). Bir sektördeki payın %25’i geçince **güçlü**, %50’yi geçince **hakim**, %75’i geçince **tekel** olursun; o sektördeki işletmelerin daha çok kazanır.',
-        en: 'Businesses fall into sectors (food, drink and entertainment, services, iron and stables, lodging, banking, oil). Pass 25% of a sector to become **Strong**, 50% for **Dominant** and 75% for a **Monopoly**; your businesses in that sector earn more.',
+        tr: 'İşletmeler sektörlere ayrılır (gıda, içki ve eğlence, hizmet, demir ve ahır, konaklama, bankacılık, petrol). Bir sektördeki payın {{%:c.SECTOR_LV.1.min}} olunca **güçlü**, {{%:c.SECTOR_LV.2.min}} olunca **hakim**, {{%:c.SECTOR_LV.3.min}} olunca **tekel** olursun; o sektördeki işletmelerin daha çok kazanır.',
+        en: 'Businesses fall into sectors (food, drink and entertainment, services, iron and stables, lodging, banking, oil). Reach {{%:c.SECTOR_LV.1.min}} of a sector to become **Strong**, {{%:c.SECTOR_LV.2.min}} for **Dominant** and {{%:c.SECTOR_LV.3.min}} for a **Monopoly**; your businesses in that sector earn more.',
       },
       steps: {
         tr: [
-          'Kazanç artışı: güçlü %5, hakim %15, tekel %30. Toptan mal da ucuzlar.',
+          'Kazanç artışı: güçlü {{%#:d.sectorIncPct.0}}, hakim {{%#:d.sectorIncPct.1}}, tekel {{%#:d.sectorIncPct.2}}. Toptan mal da ucuzlar.',
           'Satmak istemeyen işletmeye tezgâhta ya da ilçe binasının **Rakipler** sekmesinde teklif yap; hakimiyetin arttıkça bedel düşer.',
           'Hakim olduğun pazarda zor duruma düşen rakipler ucuza satılır.',
           '**Günlük → İşlerim → Pazar Payların** her sektördeki payını gösterir.',
         ],
         en: [
-          'Income bonus: Strong +5%, Dominant +15%, Monopoly +30%. Wholesale goods get cheaper too.',
+          'Income bonus: Strong +{{%#:d.sectorIncPct.0}}, Dominant +{{%#:d.sectorIncPct.1}}, Monopoly +{{%#:d.sectorIncPct.2}}. Wholesale goods get cheaper too.',
           'Make an offer on a business that is not for sale at its counter or in the county office’s **Rivals** tab; the price drops as your dominance grows.',
           'In markets you dominate, struggling rivals go up for sale cheaply.',
           '**Journal → Business → Your Market Shares** shows your share in every sector.',
@@ -139,18 +139,18 @@
         en: ['how do I start a bank', 'buy the town bank', 'bank run', 'my bank failed', 'deposit interest rate'],
       },
       a: {
-        tr: 'Gelişmiş bir kasabanın (ya da daha büyüğünün) büyük arsasına banka kurabilir ya da kasabanın bankasını teklifle alabilirsin. İkisi de **onur 10 ve üstü** ister. Tezgâhtaki **Bankayı Yönet** menüsünden faizi, kredi politikasını ve bekçiyi seçersin.',
-        en: 'Build a bank on a large lot in a thriving town (or bigger), or buy the town’s bank with an offer. Both need **honor 10 or more**. The **Run the Bank** menu at the counter sets interest, loan policy and the guard.',
+        tr: 'Gelişmiş bir kasabanın (ya da daha büyüğünün) büyük arsasına banka kurabilir ya da kasabanın bankasını teklifle alabilirsin. İkisi de **onur {{#:c.BANK.honor}} ve üstü** ister. Tezgâhtaki **Bankayı Yönet** menüsünden faizi, kredi politikasını ve bekçiyi seçersin.',
+        en: 'Build a bank on a large lot in a thriving town (or bigger), or buy the town’s bank with an offer. Both need **honor {{#:c.BANK.honor}} or more**. The **Run the Bank** menu at the counter sets interest, loan policy and the guard.',
       },
       steps: {
         tr: [
-          'Mevduat faizi %1, %2 ya da %3,5: düşük faiz kârı büyütür ama mevduat kaçar.',
+          'Mevduat faizi {{%:c.BANK.rates.0}}, {{%:c.BANK.rates.1}} ya da {{%:c.BANK.rates.2}}: düşük faiz kârı büyütür ama mevduat kaçar.',
           'Kredi politikası: Temkinli (az batık), Dengeli ya da Cesur (yüksek faiz, çok batık).',
           'Silahlı bekçi soygunları zorlaştırır.',
           'Kâr kasada birikir ya da hesabına aktarılır; zarar sermayeden düşer.',
         ],
         en: [
-          'Deposit interest of 1%, 2% or 3.5%: low rates boost profit but depositors leave.',
+          'Deposit interest of {{%:c.BANK.rates.0}}, {{%:c.BANK.rates.1}} or {{%:c.BANK.rates.2}}: low rates boost profit but depositors leave.',
           'Loan policy: Cautious (few bad loans), Balanced, or Bold (high interest, many bad loans).',
           'An armed guard makes robberies harder.',
           'Profit collects in the vault or goes to your account; losses come out of capital.',
@@ -171,21 +171,21 @@
         en: ['how do I find oil', 'how to build an oil derrick', 'where are the oil fields', 'how to build a refinery', 'black gold'],
       },
       a: {
-        tr: 'Dünyada altı petrol sahası vardır; kasabalardan uzak düz ovalarda toprakta **kara, yağlı sızıntılar** görürsün. 1900’den sonra araziyi sızıntının başından ya da ilçe binasının **Petrol** sekmesinden alır, **sondaj kulesi** ($450) kurarsın.',
-        en: 'There are six oil fields, on flat plains far from towns, marked by **black, oily seeps** in the ground. After 1900 buy the land at the seep or in the county office’s **Oil** tab, then build a **derrick** ($450).',
+        tr: 'Dünyada {{#:c.OIL.fields}} petrol sahası vardır; kasabalardan uzak düz ovalarda toprakta **kara, yağlı sızıntılar** görürsün. {{#:c.OIL.year}} yılından sonra araziyi sızıntının başından ya da ilçe binasının **Petrol** sekmesinden alır, **sondaj kulesi** ({{$:c.OIL.well}}) kurarsın.',
+        en: 'There are {{#:c.OIL.fields}} oil fields, on flat plains far from towns, marked by **black, oily seeps** in the ground. After {{#:c.OIL.year}} buy the land at the seep or in the county office’s **Oil** tab, then build a **derrick** ({{$:c.OIL.well}}).',
       },
       steps: {
         tr: [
           'Kule üç günde açılır; kuyu kuru çıkabilir ya da fışkırabilir.',
           'Petrol her gün satılır, para hesabına yatar; saha tükendikçe üretim düşer.',
           'Varil fiyatı döneme bağlıdır: otomobiller yaygınlaştıkça yükselir.',
-          'İstasyonlu bir kasabaya 1902’den sonra **rafineri** ($3000) kurarsan petrolün 1,8 katı fiyata satılır.',
+          'İstasyonlu bir kasabaya {{#:c.OIL.refYear}} yılından sonra **rafineri** ({{$:c.OIL.ref}}) kurarsan petrolün {{#:c.OIL.refMul}} katı fiyata satılır.',
         ],
         en: [
           'A derrick takes three days; the well may come up dry or strike a gusher.',
           'Oil sells every day and the money goes to your account; output falls as the field drains.',
           'The barrel price follows the era: it climbs as cars spread.',
-          'Build a **refinery** ($3000) in a station town after 1902 and your oil sells for 1.8× the price.',
+          'Build a **refinery** ({{$:c.OIL.ref}}) in a station town after {{#:c.OIL.refYear}} and your oil sells for {{#:c.OIL.refMul}}× the price.',
         ],
       },
       tips: {
@@ -208,12 +208,12 @@
       },
       steps: {
         tr: [
-          'Basamaklar: Sıradan (0), Tanınmış (25), Nüfuzlu (50), Sözü Geçen (75), Patron (90).',
+          'Basamaklar: Sıradan ({{#:c.INF_LV.0.min}}), Tanınmış ({{#:c.INF_LV.1.min}}), Nüfuzlu ({{#:c.INF_LV.2.min}}), Sözü Geçen ({{#:c.INF_LV.3.min}}), Patron ({{#:c.INF_LV.4.min}}).',
           'Nüfuz rüşvetin kabul edilmesini, şerifi maaşa bağlamayı ve koruma tutmayı açar.',
           'Puanı ve parçalarını **Günlük → Karakter**’de görürsün.',
         ],
         en: [
-          'Levels: Nobody (0), Known (25), Influential (50), Powerful (75), Boss (90).',
+          'Levels: Nobody ({{#:c.INF_LV.0.min}}), Known ({{#:c.INF_LV.1.min}}), Influential ({{#:c.INF_LV.2.min}}), Powerful ({{#:c.INF_LV.3.min}}), Boss ({{#:c.INF_LV.4.min}}).',
           'Influence unlocks bribes that work, sheriffs on your payroll and bodyguards.',
           'See the score and its parts in **Journal → Character**.',
         ],
@@ -251,8 +251,8 @@
         ],
       },
       tips: {
-        tr: ['Bazı şerifler rüşvet almaz; onlara teklif yapmak ayrı bir suçtur. Barmen hangisinin aldığını fısıldayabilir.', '1915’te kurulan Islah Komisyonu’ndan sonra rüşvet pahalanır.'],
-        en: ['Some sheriffs refuse bribes and offering one is a crime of its own. A bartender may whisper which ones take them.', 'After the Reform Commission forms in 1915, bribes cost more.'],
+        tr: ['Bazı şerifler rüşvet almaz; onlara teklif yapmak ayrı bir suçtur. Barmen hangisinin aldığını fısıldayabilir.', '{{#:c.BRIBE.reformYear}} yılında kurulan Islah Komisyonu’ndan sonra rüşvet pahalanır.'],
+        en: ['Some sheriffs refuse bribes and offering one is a crime of its own. A bartender may whisper which ones take them.', 'After the Reform Commission forms in {{#:c.BRIBE.reformYear}}, bribes cost more.'],
       },
       rel: ['influence', 'payroll', 'wanted'],
     },
@@ -295,8 +295,8 @@
         en: ['how do I hire a bodyguard', 'hired guns', 'why will my guard not shoot', 'types of bodyguards'],
       },
       a: {
-        tr: '**Nüfuzlu** olunca saloon, cantina ve kumarhanelerden silahlı **koruma** tutarsın: Nüfuzlu 1, Sözü Geçen 2, Patron 3 koruma. Peşin on günlük ücret ve her gün ücret ödersin.',
-        en: 'Once **Influential** you can hire armed **bodyguards** at saloons, cantinas and gambling halls: 1 when Influential, 2 when Powerful, 3 as Boss. You pay ten days up front, then a daily wage.',
+        tr: '**Nüfuzlu** olunca saloon, cantina ve kumarhanelerden silahlı **koruma** tutarsın: Nüfuzlu {{#:c.GUARD_MAX.2}}, Sözü Geçen {{#:c.GUARD_MAX.3}}, Patron {{#:c.GUARD_MAX.4}} koruma. Peşin on günlük ücret ve her gün ücret ödersin.',
+        en: 'Once **Influential** you can hire armed **bodyguards** at saloons, cantinas and gambling halls: {{#:c.GUARD_MAX.2}} when Influential, {{#:c.GUARD_MAX.3}} when Powerful, {{#:c.GUARD_MAX.4}} as Boss. You pay ten days up front, then a daily wage.',
       },
       steps: {
         tr: [

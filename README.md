@@ -20,11 +20,37 @@ oyunun diliyle (`?lang=tr` ya da `?lang=en`) açar.
 - **Bunu mu demek istedin?**: yazım hatalı sözcükler sözlükteki en yakın sözcükle düzeltilir.
 - **İki dil**: Türkçe ve İngilizce. Arayüz dili tarayıcıdan, `?lang=` parametresinden ya da sağ üstteki
   düğmeden seçilir ve hatırlanır. Arama her iki dilde de çalışır: Türkçe arayüzde İngilizce soru da bulunur.
-- **Tüm konular**: kategorilere göre bütün başlıklar (`#/topics`).
+- **Tüm konular**: kategorilere göre bütün başlıklar (`#/topics`); altında “Oyun verisi” bölümü.
+- **Veri sayfaları**: 119 eşya, 9 silah, 7 at cinsi, 17 hayvan, 13 kasaba, 25 önemli yer ve 40 başarım için
+  kısa bir giriş cümlesi ve bir bilgi tablosu: fiyatı, satıldığı yerler, nasıl bulunduğu (av, balık, toplama,
+  tarif, iş, sandık), satınca kabaca ne getirdiği ve en iyi alıcıları, etkisi, hangi tariflerde kullanıldığı,
+  hayvanın canı ve yaşadığı yerler, atın hızı ve dayanıklılığı, kasabanın binaları… “kinin nerede satılır”,
+  “arap atı kaç para”, “bear pelt price” gibi sorular doğrudan bu sayfalara gider. Makalelerde kalın yazılan
+  adlar (**Kinin**, **Mustang**) kendi sayfasına bağlanır.
 - Açık ve koyu tema (sistem ayarını izler), telefon genişliğinde de düzgün.
 - Hikâye bölümleri yoktur; metinler oyunun kurallarına dayanır ama oyundan birebir alınmamış, sadeleştirilmiştir.
 
-Adresler: `#/` ana sayfa, `#/q/<soru>` arama, `#/a/<konu>` konu, `#/topics` tüm konular.
+## Oyun verisi: tek kaynak
+
+Wiki'deki sayılar elle yazılmaz. Oyun deposundaki (`bozukartr/dustbound`) `tools/wiki-export.js` aracı oyunun
+kendi tablolarını (eşyalar, dükkânlar, hizmet fiyatları, atlar, hayvanlar, kasabalar, önemli yerler ve
+sandıkları, başarımlar, işler, mülkler, hayatta kalma kuralları…) ve İngilizce adlarını okuyup
+`assets/data/game.js` dosyasını üretir. Oyunun düzyazı açıklamaları aktarılmaz.
+
+- **Veri sayfaları** bu dosyadan tarayıcıda üretilir (`assets/js/gamedata.js`): cümleler tablolardaki
+  değerlerden sade biçimde kurulur, bilgi tablosu oyunun değerlerini gösterir.
+- **Makalelerdeki sayılar** yer tutucudur: `{{$:items.bedroll.p}}` sayfada `$4,25` (İngilizcede `$4.25`) olur.
+  Biçimler: `$` para, `$-` para aralığı, `#` sayı, `#-` sayı aralığı, `%` kesirden yüzde (0,25 → %25),
+  `%#` hazır yüzde, `x` çarpan (×1,4), `n` ad. Yol `game.js` içindeki değerdir; dizilerde sıra ya da kimlik
+  kullanılır (`c.LIFE_PACES.0.dpy`, `recipes.arrows.need.feather`, `achievements.towns.perk`).
+- Oyunda bir değer değişince oyun deposunda `node tools/wiki-export.js` çalıştırılır (wiki deposu oyunun yanında
+  klonlu olmalı) ve değişen `game.js` buraya gönderilir. Oyunun testi (`tests/e2e/wikidata.test.js`), wiki
+  deposu yanındaysa buradaki kopyanın eski kaldığını yakalar; buradaki test de çözülemeyen yer tutucuyu,
+  kırık bağlantıyı ya da eksik sayfayı yakalar.
+
+Adresler: `#/` ana sayfa, `#/q/<soru>` arama, `#/a/<konu>` konu, `#/topics` tüm konular. Veri sayfaları:
+`#/a/item-quinine`, `#/a/weapon-rifle`, `#/a/horse-arabian`, `#/a/animal-bear`, `#/a/town-harlow`,
+`#/a/place-crater`, `#/a/ach-towns`.
 
 ## Arama nasıl çalışır? (çok dallı anahtar kelime araması)
 
@@ -52,6 +78,10 @@ her makale bu dalların en iyisiyle puanlanır:
    ağırlığı (başlık 5, soru kalıpları 4, kısa ad 3, etiket 3,5, cevap 2, adımlar 1,3, ipuçları 1). Sözcüğün
    kendisi de geçiyorsa kavram puanına eklenir. Sorgunun ne kadarını karşıladığı (kapsama) puanı güçlü biçimde
    etkiler; bütün birimler başlıkta ya da bir soru kalıbında geçiyorsa ek puan verilir.
+8. **Veri sayfaları**: bilgi tablosu da aranır (ağırlık 1,4). Yüzlerce veri sayfası nadirlik hesabını
+   çarpıtmasın diye belge sıklığına çeyrek ağırlıkla katılır ve aynı puanda nasıl yapılır makalelerinin biraz
+   gerisinde kalır. Sorgu bir sayfanın adını ve yalnızca fiyat / satın alma / satma sorusunu içeriyorsa
+   (“kinin nerede satılır”) o sayfa öne çıkar; “yabani at nasıl evcilleştirilir” ise yine makaleye gider.
 
 ## Klasörler
 
@@ -59,10 +89,12 @@ her makale bu dalların en iyisiyle puanlanır:
 index.html                 tek sayfa
 assets/css/wiki.css        görünüm
 assets/js/search.js        arama motoru (tarayıcıda ve Node'da çalışır)
+assets/js/gamedata.js      oyun verisinden yer tutucular ve veri sayfaları (tarayıcıda ve Node'da çalışır)
 assets/js/app.js           arayüz: yönlendirme, öneriler, sonuç ve makale görünümü
 assets/js/app-data.js      kategoriler, hazır sorular, arayüz metinleri (TR/EN)
 assets/data/concepts.js    kavram sözlüğü (TR/EN eş anlamlılar)
 assets/data/articles-*.js  makaleler, kategori kategori
+assets/data/game.js        oyunun verisi (OTOMATİK ÜRETİLİR; dustbound: node tools/wiki-export.js)
 assets/img/                logo ve sekme simgesi
 assets/fonts/              Rye yazı tipi (SIL Open Font License, bkz. Rye-OFL.txt)
 tests/                     veri, arama kalitesi ve tarayıcı testleri
@@ -85,19 +117,24 @@ Her makale `assets/data/articles-*.js` dosyalarından birinde bir nesnedir:
 }
 ```
 
-- Metinde `**kalın**` ve `[[E]]` (tuş simgesi) kullanılabilir; HTML yazılmaz.
+- Metinde `**kalın**`, `[[E]]` (tuş simgesi) ve `[metin](#/a/konu)` (bağlantı) kullanılabilir; HTML yazılmaz.
+  Kalın yazılan bir eşya, silah, at, hayvan, kasaba ya da yer adı kendi veri sayfasına bağlanır; başarım adları
+  yalnız “başarım” geçen cümlede bağlanır.
 - `tags` kavram sözlüğündeki kimliklerdir (`assets/data/concepts.js`). Yeni bir eş anlamlı ya da yeni bir
   kavram eklemek aramayı hemen etkiler. Eş anlamlıları kök ya da yalın hâliyle yazın; çok genel sözcüklerden
   (ör. “slow”, “kapı”) kaçının: başka konulara da yapışırlar.
 - `q` içine oyuncuların gerçekten soracağı cümleleri yazmak aramayı en çok güçlendiren şeydir.
-- Sayıları ve adları oyunun güncel verisiyle (eşyalar, dükkânlar, hizmet fiyatları, hayatta kalma
-  kuralları) aynı tutun.
+- Oyunun verisinde olan sayıları elle yazmayın, yer tutucu kullanın (`({{$:items.quinine.p}})`,
+  `{{#:c.HORSE_CAP}} birim`). Sayıdan sonra ek gelecekse cümleyi eksiz kurun (“1912’den sonra” değil
+  “{{#:c.CAR_YEAR}} yılından sonra”): değer değişince ek uyumu bozulmasın. Başarım kazanımları için
+  `**{{n:achievements.hunt25}}** başarımı: {{n:achievements.hunt25.perk}}.` kalıbı kullanılır.
 - Yeni bir makaleyi `tests/search.test.js` içindeki örnek sorgulara da ekleyin.
 
 ## Testler
 
 ```
-node tests/search.test.js     # veri denetimi + 170'i aşkın gerçek soru (TR/EN, ekli, yazım hatalı, eş anlamlı)
+node tests/search.test.js     # veri denetimi (yer tutucular, veri sayfaları, bağlantılar) + 200'ü aşkın gerçek soru
+                              # (TR/EN, ekli, yazım hatalı, eş anlamlı, fiyat ve satın alma soruları)
 node tests/ui.test.js         # tarayıcıda arayüz (Playwright gerekir)
 ```
 

@@ -11,23 +11,23 @@
         en: ['where do I buy a horse', 'what is the best horse', 'fastest horse', 'horse prices', 'getting a new horse'],
       },
       a: {
-        tr: 'Atı kasabaların **ahırından** alırsın: tezgâhta **At Satın Al**. Fiyatlar $70 ile $925 arasındadır; pahalı atlar daha hızlı ya da daha dayanıklıdır.',
-        en: 'Buy horses at a town **stable**: choose **Buy a Horse** at the counter. Prices run from $70 to $925; pricier horses are faster or tougher.',
+        tr: 'Atı kasabaların **ahırından** alırsın: tezgâhta **At Satın Al**. Fiyatlar {{$:horses.morgan.p}} ile {{$:horses.arabian.p}} arasındadır; pahalı atlar daha hızlı ya da daha dayanıklıdır.',
+        en: 'Buy horses at a town **stable**: choose **Buy a Horse** at the counter. Prices run from {{$:horses.morgan.p}} to {{$:horses.arabian.p}}; pricier horses are faster or tougher.',
       },
       steps: {
         tr: [
-          '**Morgan** ($70): ucuz ve dengeli.',
-          '**Tennessee Walker** ($120): biraz daha hızlı ve dayanıklı.',
-          '**Mustang** ($160): hızlı ve sağlam.',
-          '**Shire** ($220): yavaş ama çok dayanıklı ve güçlü.',
-          '**Standardbred** ($300): çok hızlı. **Arap Atı** ($925): en hızlısı.',
+          '**Morgan** ({{$:horses.morgan.p}}): ucuz ve dengeli.',
+          '**Tennessee Walker** ({{$:horses.tennessee.p}}): biraz daha hızlı ve dayanıklı.',
+          '**Mustang** ({{$:horses.mustang.p}}): hızlı ve sağlam.',
+          '**Shire** ({{$:horses.shire.p}}): yavaş ama çok dayanıklı ve güçlü.',
+          '**Standardbred** ({{$:horses.standardbred.p}}): çok hızlı. **Arap Atı** ({{$:horses.arabian.p}}): en hızlısı.',
         ],
         en: [
-          '**Morgan** ($70): cheap and balanced.',
-          '**Tennessee Walker** ($120): a little faster and hardier.',
-          '**Mustang** ($160): fast and sturdy.',
-          '**Shire** ($220): slow but very tough and strong.',
-          '**Standardbred** ($300): very fast. **Arabian** ($925): the fastest of all.',
+          '**Morgan** ({{$:horses.morgan.p}}): cheap and balanced.',
+          '**Tennessee Walker** ({{$:horses.tennessee.p}}): a little faster and hardier.',
+          '**Mustang** ({{$:horses.mustang.p}}): fast and sturdy.',
+          '**Shire** ({{$:horses.shire.p}}): slow but very tough and strong.',
+          '**Standardbred** ({{$:horses.standardbred.p}}): very fast. **Arabian** ({{$:horses.arabian.p}}): the fastest of all.',
         ],
       },
       tips: {
@@ -65,8 +65,8 @@
         ],
       },
       tips: {
-        tr: ['Kementteki yabani at 7–10 saniye içinde kurtulur; acele et.', '**At Fısıldayan** başarımı bağın 2 kat hızlı gelişmesini sağlar.'],
-        en: ['A lassoed wild horse breaks free in 7–10 seconds, so be quick.', 'The **Horse Whisperer** achievement makes your bond grow twice as fast.'],
+        tr: ['Kementteki yabani at 7–10 saniye içinde kurtulur; acele et.', '**{{n:achievements.tamer}}** başarımı: {{n:achievements.tamer.perk}}.'],
+        en: ['A lassoed wild horse breaks free in 7–10 seconds, so be quick.', '**{{n:achievements.tamer}}** achievement: {{n:achievements.tamer.perk}}.'],
       },
       rel: ['horse-bond', 'lasso', 'horse-buy'],
     },
@@ -87,13 +87,13 @@
           'Kendi atınla her mil yaklaşık 1 puan; okşamak 3, fırçalamak 5, saman 6 puan.',
           'Seviyeler: 2 (50 puan), 3 (150), 4 (300).',
           'Saman canını 40 artırır ve dayanıklılığını doldurur; **At Toniği** dayanıklılığı doldurur.',
-          'Ahırda ve demircide atını **tımar ettirebilirsin** (50¢).',
+          'Ahırda ve demircide atını **tımar ettirebilirsin** ({{$:svc.horsecare}}).',
         ],
         en: [
           'About 1 point per mile on your own horse; patting gives 3, brushing 5, hay 6.',
           'Levels: 2 (50 points), 3 (150), 4 (300).',
           'Hay restores 40 health and refills stamina; a **Horse Tonic** refills stamina.',
-          'Stables and blacksmiths can **groom** your horse (50¢).',
+          'Stables and blacksmiths can **groom** your horse ({{$:svc.horsecare}}).',
         ],
       },
       tips: {
@@ -148,13 +148,13 @@
         tr: [
           'Dururken [[A]] / [[D]] atı yerinde döndürür; dörtnalda daha geniş döner.',
           'Kolda sol analog atı gösterdiği yöne çevirir.',
-          'Eyere 4 birim yük alınır (kişi ve iri leş 2, post ve küçük leş 1).',
+          'Eyere {{#:c.HORSE_CAP}} birim yük alınır (kişi ve iri leş 2, post ve küçük leş 1).',
           'Atlıyken [[E]]’yi basılı tutarak yanındakilere selam verebilirsin.',
         ],
         en: [
           'When standing still, [[A]] / [[D]] turn the horse in place; at a gallop it turns wider.',
           'On a controller the left stick steers the horse where you point.',
-          'The saddle carries 4 units (a person or big carcass is 2, a pelt or small carcass 1).',
+          'The saddle carries {{#:c.HORSE_CAP}} units (a person or big carcass is 2, a pelt or small carcass 1).',
           'While mounted, hold [[E]] to greet people around you.',
         ],
       },
@@ -173,8 +173,8 @@
         en: ['my horse died', 'my horse is down', 'where to buy horse reviver', 'how do I heal my horse'],
       },
       a: {
-        tr: 'Atının canı biterse yere yığılır; üstündeysen düşer ve 12 can kaybedersin. **At Diriltici** ($5,75, ahır) atını %50 canla ayağa kaldırır. Yoksa ahırdan yeni bir at alırsın.',
-        en: 'If your horse runs out of health it collapses; if you were riding you fall and lose 12 health. A **Horse Reviver** ($5.75, stables) gets it back up with 50% health. Otherwise buy a new horse at a stable.',
+        tr: 'Atının canı biterse yere yığılır; üstündeysen düşer ve 12 can kaybedersin. **At Diriltici** ({{$:items.horse_reviver.p}}, ahır) atını %50 canla ayağa kaldırır. Yoksa ahırdan yeni bir at alırsın.',
+        en: 'If your horse runs out of health it collapses; if you were riding you fall and lose 12 health. A **Horse Reviver** ({{$:items.horse_reviver.p}}, stables) gets it back up with 50% health. Otherwise buy a new horse at a stable.',
       },
       steps: {
         tr: [
@@ -203,20 +203,20 @@
         en: ['where to buy a wagon', 'how do I get a car', 'how to drive a car', 'when do cars appear', 'how to fetch my wagon'],
       },
       a: {
-        tr: '**Yük arabası** ahırda $130’dır ve 8 sandık mal taşır; işletmelerine mal götürmek için idealdir. 1912’den sonra ahırdan bir **otomobil** de alabilirsin.',
-        en: 'A **freight wagon** costs $130 at a stable and carries 8 crates, ideal for supplying your businesses. After 1912 you can also buy an **automobile** at a stable.',
+        tr: '**Yük arabası** ahırda {{$:c.WAGON_PRICE}}’dır ve {{#:c.WAGON_CAP}} sandık mal taşır; işletmelerine mal götürmek için idealdir. {{#:c.CAR_YEAR}} yılından sonra ahırdan bir **otomobil** de alabilirsin.',
+        en: 'A **freight wagon** costs {{$:c.WAGON_PRICE}} at a stable and carries {{#:c.WAGON_CAP}} crates, ideal for supplying your businesses. After {{#:c.CAR_YEAR}} you can also buy an **automobile** at a stable.',
       },
       steps: {
         tr: [
           'Araba at gibi sürülür: [[W]] gaz, [[A]] / [[D]] direksiyon, [[S]] fren; dururken basılı tutarsan geri gider.',
           'Otomobil yalnızca giderken döner ve yorulmaz.',
-          'Herhangi bir ahırda arabanı ya da otomobilini ahırın önüne getirtebilirsin ($1).',
+          'Herhangi bir ahırda arabanı ya da otomobilini ahırın önüne getirtebilirsin ({{$:svc.fetchWagon}}).',
           '1908’den sonra yollarda otomobiller görünmeye başlar, yıllar geçtikçe çoğalır.',
         ],
         en: [
           'Drive it like a horse: [[W]] throttle, [[A]] / [[D]] steer, [[S]] brake; hold it when stopped to reverse.',
           'A car only turns while moving and never gets tired.',
-          'Any stable can bring your wagon or car to its door ($1).',
+          'Any stable can bring your wagon or car to its door ({{$:svc.fetchWagon}}).',
           'Cars start appearing on the roads after 1908 and grow more common over the years.',
         ],
       },
@@ -235,8 +235,8 @@
         en: ['is there fast travel', 'where to buy a train ticket', 'how do I get to another town', 'what is the stagecoach', 'how to reach a town without a train'],
       },
       a: {
-        tr: 'İstasyondaki gişede **Tren Bileti Al**: bilet uzaklığa göre en az 50¢’dir ve yol süresi ekran kararırken geçer. Tren geçmeyen kasabalara ahır ya da postaneden **posta arabası** bileti alırsın.',
-        en: 'At a station’s ticket office choose **Buy a Train Ticket**: fares start at 50¢ and grow with distance, and the trip passes while the screen fades. For towns without a railroad, buy a **stagecoach** ticket at a stable or post office.',
+        tr: 'İstasyondaki gişede **Tren Bileti Al**: bilet uzaklığa göre en az {{$:svc.trainMin}}’dir ve yol süresi ekran kararırken geçer. Tren geçmeyen kasabalara ahır ya da postaneden **posta arabası** bileti alırsın.',
+        en: 'At a station’s ticket office choose **Buy a Train Ticket**: fares start at {{$:svc.trainMin}} and grow with distance, and the trip passes while the screen fades. For towns without a railroad, buy a **stagecoach** ticket at a stable or post office.',
       },
       steps: {
         tr: [
@@ -251,8 +251,8 @@
         ],
       },
       tips: {
-        tr: ['**Bütün Kasabalar** başarımı (8 kasaba gez) tren biletlerini yarıya indirir.'],
-        en: ['The **Every Town** achievement (visit 8 towns) halves train fares.'],
+        tr: ['**{{n:achievements.towns}}** başarımı: {{n:achievements.towns.perk}}.'],
+        en: ['**{{n:achievements.towns}}** achievement: {{n:achievements.towns.perk}}.'],
       },
       rel: ['carriage', 'map', 'towns'],
     },
@@ -265,8 +265,8 @@
         en: ['how to buy a private carriage', 'how to call the carriage', 'coachman', 'skip the carriage ride'],
       },
       a: {
-        tr: 'Ahırdan **$400**’a çift atlı bir fayton ve arabacısını alırsın (arabacı günde 75¢). Binince gideceğin yeri seçersin; arabacı yolu kendisi sürer.',
-        en: 'Buy a two-horse carriage and its driver at a stable for **$400** (the driver earns 75¢ a day). Climb in, pick a destination and the driver takes the road for you.',
+        tr: 'Ahırdan **{{$:c.CARRIAGE_PRICE}}**’a çift atlı bir fayton ve arabacısını alırsın (arabacı günde {{$:c.CARRIAGE_WAGE}}). Binince gideceğin yeri seçersin; arabacı yolu kendisi sürer.',
+        en: 'Buy a two-horse carriage and its driver at a stable for **{{$:c.CARRIAGE_PRICE}}** (the driver earns {{$:c.CARRIAGE_WAGE}} a day). Climb in, pick a destination and the driver takes the road for you.',
       },
       steps: {
         tr: [

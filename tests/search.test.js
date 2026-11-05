@@ -11,6 +11,11 @@ const articles = FILES.flatMap(f => require(path.join(root, 'data', `articles-${
 const concepts = require(path.join(root, 'data', 'concepts.js'));
 const WS = require(path.join(root, 'js', 'search.js'));
 const APP = require(path.join(root, 'js', 'app-data.js'));
+const GAME = require(path.join(root, 'data', 'game.js'));
+const WD = require(path.join(root, 'js', 'gamedata.js'));
+const fillErrors = WD.fill(articles, GAME);       // makalelerdeki {{…}} sayıları oyunun verisinden
+const entities = WD.entities(GAME);               // eşya, silah, at, hayvan, kasaba, yer, başarım sayfaları
+const all = articles.concat(entities);
 
 let fail = 0, pass = 0;
 const ok = (cond, msg) => { if (cond) pass++; else { fail++; console.log('  ✗ ' + msg); } };
@@ -39,6 +44,64 @@ for (const [c, C] of Object.entries(concepts)) {
   for (const r of C.rel || []) ok(concepts[r], `kavram ${c}: yakın kavram yok: ${r}`);
 }
 
+/* ---------------- 1b. Oyun verisi: yer tutucular ve veri sayfaları ---------------- */
+console.log('Oyun verisi');
+ok(!fillErrors.length, 'makalelerdeki bütün {{…}} yer tutucuları oyunun verisinden çözülür: ' + fillErrors.join(', '));
+ok(!/\{\{/.test(JSON.stringify(articles)), 'doldurulmamış yer tutucu kalmadı');
+ok(GAME.meta && GAME.meta.version && GAME.meta.hash, 'oyun verisinin sürümü ve özeti');
+{
+  const kinds = {};
+  for (const A of entities) kinds[A.entity] = (kinds[A.entity] || 0) + 1;
+  ok(kinds.item === Object.keys(GAME.items).length, `her eşyanın sayfası var (${kinds.item})`);
+  ok(kinds.weapon === Object.values(GAME.weapons).filter(w => !w.item).length, `silah sayfaları (${kinds.weapon})`);
+  ok(kinds.horse === Object.keys(GAME.horses).length && kinds.animal === Object.keys(GAME.animals).length, 'at cinsi ve hayvan sayfaları');
+  ok(kinds.town === GAME.towns.length && kinds.place === GAME.landmarks.length && kinds.ach === GAME.achievements.length, 'kasaba, önemli yer ve başarım sayfaları');
+}
+const allIds = new Set(all.map(A => A.id));
+ok(allIds.size === all.length, 'veri sayfalarının kimlikleri tekil ve makalelerle çakışmaz');
+for (const A of entities) {
+  ok(APP.CATS[A.cat] && APP.CATS[A.cat].db, `${A.id}: veri kategorisi ${A.cat}`);
+  for (const L of ['tr', 'en']) {
+    ok(A.title[L] && A.a[L] && A.a[L].trim(), `${A.id}: ${L} ad ve giriş cümlesi`);
+    ok((A.facts[L].length > 0 || A.entity === 'place') && A.facts[L].every(([l, v]) => l && v), `${A.id}: ${L} bilgi tablosu`);
+  }
+  ok(A.facts.tr.length === A.facts.en.length, `${A.id}: TR/EN bilgi satırı sayısı aynı`);
+  for (const r of A.rel) ok(allIds.has(r), `${A.id}: ilgili konu yok: ${r}`);
+}
+for (const A of all) {
+  const text = JSON.stringify([A.title, A.a, A.steps, A.tips || {}, A.facts || {}]);
+  ok(!/undefined|NaN|null|\[object/.test(text), `${A.id}: metinde bozuk değer`);
+  for (const m of text.matchAll(/\]\(#\/a\/([\w-]+)\)/g)) ok(allIds.has(m[1]), `${A.id}: kırık bağlantı ${m[1]}`);
+}
+/* oyunun tablolarındaki değerler sayfada aynen görünür */
+{
+  const page = (id) => entities.find(A => A.id === id);
+  const fact = (id, L, label) => (page(id).facts[L].find(([l]) => l === label) || [])[1] || '';
+  ok(fact('item-quinine', 'tr', 'Fiyatı') === WD.money(GAME.items.quinine.p, 'tr'), 'eşya fiyatı oyundan');
+  ok(/Eczane/.test(fact('item-quinine', 'tr', 'Satıldığı yer')) && /Doktor/.test(fact('item-quinine', 'tr', 'Satıldığı yer')), 'satıldığı yerler dükkân tablosundan');
+  ok(/animal-deer/.test(fact('item-antler', 'tr', 'Nasıl bulunur')), 'kaynak: avlanan hayvan');
+  ok(/place-crater/.test(fact('item-meteorite', 'tr', 'Nasıl bulunur')), 'kaynak: önemli yerin sandığı');
+  ok(/item-cooked_game/.test(page('item-raw_game').a.tr), 'çiğ et pişirilince ne olduğunu söyler');
+  ok(fact('horse-arabian', 'en', 'Price') === WD.money(GAME.horses.arabian.p, 'en'), 'at fiyatı oyundan');
+  ok(fact('weapon-shotgun', 'tr', 'Hasar') === `${GAME.weapons.shotgun.dmg} × ${GAME.weapons.shotgun.pellets}`, 'saçmalı silahın hasarı');
+  ok(/Mantar|Kinin/.test(fact('place-hermit', 'tr', 'Satılanlar')), 'yerdeki dükkânın malları');
+  ok(fact('ach-towns', 'en', 'Perk') === GAME.achievements.find(a => a.id === 'towns').perk.en, 'başarım kazanımı');
+  ok(!entities.some(A => A.entity === 'ach' && /^story/.test(A.key)), 'hikâye başarımları yok');
+}
+/* biçimler ve yer tutucu sözdizimi */
+ok(WD.money(0.5, 'tr') === '50¢' && WD.money(4.25, 'tr') === '$4,25' && WD.money(4.25, 'en') === '$4.25' && WD.money(30, 'en') === '$30', 'para biçimi');
+ok(WD.money(3500, 'tr') === '$3.500' && WD.money(3500, 'en') === '$3,500', 'binlik ayırıcı');
+ok(WD.moneyRange(1.6, 2.8, 'tr') === '$1,60–2,80' && WD.moneyRange(0.5, 2, 'en') === '50¢–$2', 'para aralığı');
+{
+  const g = { a: { p: 1.5 }, r: 0.035, k: 1.4, h: 15, w: -5, pair: [2, 4], n: { n: { tr: 'Ad', en: 'Name' } }, list: [{ id: 'x', v: 2 }] };
+  const e = [];
+  const tr = WD.fillText('{{$:a.p}} {{%:r}} {{%#:h}} {{x:k}} {{#:w}} {{#-:pair}} {{n:n}} {{#:list.x.v}} {{#:list.0.v}}', g, 'tr', e);
+  ok(tr === '$1,50 %3,5 %15 ×1,4 −5 2–4 Ad 2 2' && !e.length, 'yer tutucular (TR): ' + tr);
+  const en = WD.fillText('{{$:a.p}} {{%:r}} {{x:k}} {{n:n}}', g, 'en', e);
+  ok(en === '$1.50 3.5% ×1.4 Name' && !e.length, 'yer tutucular (EN): ' + en);
+  ok(WD.fillText('{{$:yok.p}} {{$:n}}', g, 'tr', e) === '? ?' && e.length === 2, 'çözülemeyen yer tutucu "?" olur ve bildirilir');
+}
+
 /* ---------------- 2. Kök ve normalleştirme ---------------- */
 console.log('Kökler');
 const has = (m, s) => m.has(s);
@@ -55,7 +118,7 @@ ok(WS.dl('evcilestirme', 'evcillestirme', 2) === 1, 'yazım uzaklığı');
 
 /* ---------------- 3. Arama kalitesi ---------------- */
 console.log('Arama');
-const E = WS.create(articles, concepts);
+const E = WS.create(all, concepts);
 /* [sorgu, arayüz dili, beklenen makale(ler), en kötü sıra] */
 const CASES = [
   // Türkçe, ekli ve doğal sorular
@@ -103,7 +166,7 @@ const CASES = [
   ['bayıldım', 'tr', 'faint', 1],
   ['canım dolmuyor', 'tr', 'health', 1],
   ['doktor ne kadar', 'tr', 'doctor', 1],
-  ['laudanum ne işe yarar', 'tr', 'medicine', 1],
+  ['laudanum ne işe yarar', 'tr', ['item-laudanum', 'medicine'], 1],
   ['sarhoşluk nasıl geçer', 'tr', 'drunk', 1],
   ['nasıl yıkanırım', 'tr', 'clean', 1],
   ['sakal nasıl değiştirilir', 'tr', ['clean', 'clothes'], 2],
@@ -170,8 +233,8 @@ const CASES = [
   ['gece nerede kalabilirim', 'tr', 'sleep', 1],
   ['çantam doldu', 'tr', 'satchel', 1],
   ['eşyalarımı nerede saklarım', 'tr', ['satchel', 'property'], 2],
-  ['kahve ne işe yarar', 'tr', 'consumables', 1],
-  ['ayı postu kaç para', 'tr', 'pelts', 1],
+  ['kahve ne işe yarar', 'tr', ['item-coffee', 'consumables'], 1],
+  ['ayı postu kaç para', 'tr', ['item-bear_pelt', 'pelts'], 1],
   ['kurt saldırısı', 'tr', 'predators', 1],
   ['hayvan nasıl bağlanır', 'tr', 'lasso', 1],
   ['elektrik ne zaman gelir', 'tr', 'towns', 1],
@@ -187,7 +250,7 @@ const CASES = [
   // yazım hataları
   ['evcilestirme', 'tr', 'horse-tame', 1],
   ['ballik tutma', 'tr', 'fishing', 1],
-  ['panzehr', 'tr', 'poison', 2],
+  ['panzehr', 'tr', ['item-antidote', 'poison'], 1],
   ['maymuncuk nerdn alinir', 'tr', 'lockpick', 1],
   ['bayilma', 'tr', 'faint', 1],
   // eş anlamlılar
@@ -235,12 +298,43 @@ const CASES = [
   ['I passed out', 'en', 'faint', 1],
   ['quick draw duel', 'en', 'duel', 1],
   ['my satchel is full', 'en', 'satchel', 1],
-  ['what does coffee do', 'en', 'consumables', 1],
+  ['what does coffee do', 'en', ['item-coffee', 'consumables'], 1],
   ['where to stay the night', 'en', 'sleep', 1],
   // arayüz dili İngilizceyken Türkçe soru, tersi
   ['yabani at', 'en', 'horse-tame', 1],
   ['how to tame a horse', 'tr', 'horse-tame', 1],
 ];
+/* veri sayfaları: adı geçen şeyin fiyatı, satıldığı yer, kendisi */
+CASES.push(
+  ['kinin nerede satılır', 'tr', 'item-quinine', 1],
+  ['kinin fiyatı', 'tr', 'item-quinine', 1],
+  ['where can i buy quinine', 'en', 'item-quinine', 1],
+  ['arap atı kaç para', 'tr', 'horse-arabian', 1],
+  ['how much is an arabian horse', 'en', 'horse-arabian', 1],
+  ['mustang fiyatı', 'tr', 'horse-mustang', 1],
+  ['kurt postu ne kadar eder', 'tr', 'item-wolf_pelt', 1],
+  ['bear pelt price', 'en', 'item-bear_pelt', 1],
+  ['boz ayı', 'tr', 'animal-bear', 1],
+  ['grizzly bear', 'en', 'animal-bear', 1],
+  ['çıngıraklı yılan', 'tr', 'animal-snake', 1],
+  ['tavşan', 'tr', 'animal-rabbit', 1],
+  ['puma', 'tr', 'animal-cougar', 1],
+  ['göktaşı krateri', 'tr', 'place-crater', 1],
+  ['meteor crater', 'en', 'place-crater', 1],
+  ['münzevi kulübesi', 'tr', 'place-hermit', 1],
+  ['harlow', 'tr', 'town-harlow', 1],
+  ['dust creek', 'en', 'town-dustcreek', 1],
+  ['schofield', 'tr', 'weapon-schofield', 1],
+  ['rolling block', 'en', 'weapon-rifle', 1],
+  ['demir mide başarımı', 'tr', 'ach-eater', 1],
+  ['iron stomach achievement', 'en', 'ach-eater', 1],
+  ['laudanum', 'tr', 'item-laudanum', 1],
+  ['meteorite fragment', 'en', 'item-meteorite', 1],
+  ['geyik boynuzu nereden bulunur', 'tr', 'item-antler', 1],
+  ['altın külçe', 'tr', 'item-gold_bar', 1],
+  ['uyku tulumu', 'tr', ['item-bedroll', 'camp'], 1],
+  ['olta nereden alınır', 'tr', ['fishing', 'item-fishing_rod'], 2],
+);
 for (const [q, lang, exp, rank] of CASES) {
   const r = E.search(q, { lang });
   const ids = r.results.map(x => x.id);
@@ -267,6 +361,11 @@ console.log('Davranış');
   const html = E.render('Yabani atlara **yaya** yaklaş, [[E]] bas.', 'at evcilleştir', 'tr');
   ok(/<mark>atlara<\/mark>/.test(html) && /<b>yaya<\/b>/.test(html) && /<kbd>E<\/kbd>/.test(html), 'vurgu ve biçim: ' + html);
   ok(!/<script/.test(E.render('<script>alert(1)</script>', '', 'tr')), 'HTML kaçışı');
+  const lk = E.render('[Kinin](#/a/item-quinine) ve **Bandaj**', '', 'tr', (n) => (n === 'Bandaj' ? 'item-bandage' : null));
+  ok(/<a class="ent" href="#\/a\/item-quinine">Kinin<\/a>/.test(lk) && /<a class="ent" href="#\/a\/item-bandage"><b>Bandaj<\/b><\/a>/.test(lk), 'bağlantılar ve kalın adların sayfaya bağlanması: ' + lk);
+  ok(WS.plain('[Kinin](#/a/item-quinine) **x** [[E]]') === 'Kinin x E', 'düz metin: biçim işaretleri atılır');
+  ok(E.snippet(entities.find(A => A.id === 'item-quinine'), 'kinin nerede satılır', 'tr').startsWith('Satıldığı yer'), 'veri sayfasında en uygun satır gösterilir');
+  ok(/2\.8 per game hour/.test(E.snippet(articles.find(A => A.id === 'hunger'), 'hunger per game hour', 'en')), 'ondalık nokta cümleyi bölmez');
   const t0 = Date.now();
   for (let i = 0; i < 50; i++) E.search('nasıl para kazanırım ' + i, { lang: 'tr' });
   const ms = (Date.now() - t0) / 50;

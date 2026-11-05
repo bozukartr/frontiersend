@@ -14,6 +14,14 @@
       town: { tr: 'Kasaba Hayatı', en: 'Town Life', icon: 'town' },
       home: { tr: 'Mülk ve Ev', en: 'Property and Home', icon: 'house' },
       settings: { tr: 'Ayarlar', en: 'Settings', icon: 'gear' },
+      /* veri sayfaları: oyunun verisinden üretilir (assets/js/gamedata.js) */
+      'db-item': { tr: 'Eşyalar', en: 'Items', icon: 'bag', db: 1 },
+      'db-weapon': { tr: 'Silahlar', en: 'Weapons', icon: 'gun', db: 1 },
+      'db-horse': { tr: 'At cinsleri', en: 'Horse breeds', icon: 'horseshoe', db: 1 },
+      'db-animal': { tr: 'Hayvanlar', en: 'Animals', icon: 'paw', db: 1 },
+      'db-town': { tr: 'Kasabalar', en: 'Towns', icon: 'town', db: 1 },
+      'db-place': { tr: 'Önemli yerler', en: 'Landmarks', icon: 'pin', db: 1 },
+      'db-ach': { tr: 'Başarımlar', en: 'Achievements', icon: 'trophy', db: 1 },
     },
     /* arama çubuğunun altındaki hazır sorular */
     FAQ: [
@@ -52,6 +60,10 @@
         lang: 'Dil',
         keysHint: 'Arama için / tuşuna bas',
         notFoundArticle: 'Bu konu bulunamadı.',
+        db: 'Oyun verisi',
+        dbHint: 'Bu sayfalar oyunun kendi verisinden üretilir; oyun güncellenince onlar da güncellenir.',
+        dbNote: (v) => `Oyunun verisinden üretildi (sürüm ${v}).`,
+        priceNote: 'Fiyatlar temel fiyattır; ticaret yeteneği, onur, kazanımlar ve dükkân sahibinin sana bakışı fiyatı değiştirir.',
       },
       en: {
         htmlTitle: 'Frontier’s End Wiki',
@@ -82,6 +94,10 @@
         lang: 'Language',
         keysHint: 'Press / to search',
         notFoundArticle: 'This topic could not be found.',
+        db: 'Game data',
+        dbHint: 'These pages are generated from the game’s own data, so they update when the game does.',
+        dbNote: (v) => `Generated from the game data (version ${v}).`,
+        priceNote: 'Prices are base prices; your Trade skill, honor, perks and how the shopkeeper sees you change them.',
       },
     },
   };

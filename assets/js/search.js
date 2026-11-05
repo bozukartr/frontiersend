@@ -23,7 +23,10 @@
       sorgunun ne kadarını karşıladığı (kapsama) puanı güçlü biçimde etkiler, bütün birimler başlıkta ya da bir
       soru kalıbında geçiyorsa ek puan verilir.
    8. Daraltma dalları: kısa ve geniş sorgularda (ör. "at") yakın puanlı sonuçların kısa adları seçenek olarak
-      sunulur (Satın alma · Evcilleştirme · Islık…). */
+      sunulur (Satın alma · Evcilleştirme · Islık…).
+   9. Veri sayfaları (oyunun verisinden üretilen eşya, hayvan, at… sayfaları; assets/js/gamedata.js): bilgi tabloları
+      da aranır; nadirlik hesabına çeyrek ağırlıkla katılır, makalelerin biraz gerisinde durur. Sorgu bir sayfanın adını
+      ve yalnızca fiyat / satın alma sorusunu içeriyorsa ("kinin nerede satılır") o sayfa öne çıkar. */
 (function (root, factory) {
   const api = factory();
   if (typeof module === 'object' && module.exports) module.exports = api;
@@ -36,7 +39,8 @@
   function fold(s) {
     return String(s).toLowerCase().normalize('NFD').replace(MARKS, '').replace(/ı/g, 'i');
   }
-  function plain(s) { return String(s).replace(/\*\*|\[\[|\]\]/g, ''); }
+  /* biçim işaretlerini atar: **kalın**, [[tuş]], [bağlantı](#/a/kimlik) */
+  function plain(s) { return String(s).replace(/\[([^\]]+)\]\(#\/a\/[\w-]+\)/g, '$1').replace(/\*\*|\[\[|\]\]/g, ''); }
   function tokenize(s) {
     return fold(plain(s)).replace(/['’`´‘][a-z]*/g, ' ').split(/[^a-z0-9]+/).filter(Boolean);
   }
@@ -47,20 +51,23 @@
       'ben sen biz siz onlar benim senin beni seni bana sana sey seyi var yok olur olmak olarak oluyor olabilir olsun ki misin miyim muyum musun midir ' +
       'mudur nedir neler nelerdir kim kimi kime lazim gerek gerekir gerekiyor gerekli istiyorum isterim acaba oyun oyunda oyunu oyunun kendi tum butun ' +
       'yapilir yapmak yapmali yaparim yapabilirim yapiyorum yapmaliyim yapilmali yapmam simdi sonra once hep artik bile hala diye yani mesela orada burada ' +
-      'icinde uzerinde ustunde altinda yaninda etmek ediyor edilir olur mu olmaz').split(' ')),
+      'icinde uzerinde ustunde altinda yaninda etmek ediyor edilir eder olur mu olmaz').split(' ')),
     en: new Set(('a an the and or of to in on at for with by from is are was were be been am do does did doing done how what where when why which who whom ' +
       'can could should would will shall may might must i me my mine you your we our us it its this that these those there here got have has had not ' +
       'no any some way ways into out about as if then than so just game anyone please tell know want need find also really very get to').split(' ')),
   };
   /* sorgunun başka bir şey sormadığını gösteren öbekler ("ne zaman", "how to") */
-  const STOP_PHRASE = { tr: ['ne zaman', 'ne yapmaliyim', 'ne yapmali'], en: ['how to', 'how do', 'how can', 'is there', 'what is', 'what do', 'what are'] };
+  const STOP_PHRASE = {
+    tr: ['ne zaman', 'ne yapmaliyim', 'ne yapmali', 'ne ise yarar', 'ne ise yariyor', 'ne yapar'],
+    en: ['how to', 'how do', 'how can', 'is there', 'what is', 'what do', 'what are', 'what does', 'used for'],
+  };
   const STOP_STEM = { tr: new Set(['yap', 'ol', 'oyun', 'et']), en: new Set(['do', 'get']) };
 
   /* ================= 3. Kök dalları ================= */
   /* Türkçe ekler, katlanmış (ı→i, ü→u…) ve uzundan kısaya. Her biri sondan ayıklanmayı dener. */
   const TR_SUF = ['yabilir', 'yebilir', 'abilir', 'ebilir', 'yabil', 'yebil', 'abil', 'ebil', 'iyor', 'uyor', 'yor', 'yacak', 'yecek', 'acak', 'ecek',
     'malar', 'meler', 'mali', 'meli', 'masi', 'mesi', 'larim', 'lerim', 'larin', 'lerin', 'lari', 'leri', 'imiz', 'umuz', 'iniz', 'unuz', 'siniz', 'sunuz',
-    'ndan', 'nden', 'dan', 'den', 'tan', 'ten', 'nda', 'nde', 'nin', 'nun', 'dir', 'dur', 'tir', 'tur', 'dik', 'duk', 'tik', 'tuk', 'lik', 'luk',
+    'digi', 'dugu', 'tigi', 'tugu', 'ndan', 'nden', 'dan', 'den', 'tan', 'ten', 'nda', 'nde', 'nin', 'nun', 'dir', 'dur', 'tir', 'tur', 'dik', 'duk', 'tik', 'tuk', 'lik', 'luk',
     'mak', 'mek', 'maz', 'mez', 'sin', 'sun', 'siz', 'suz', 'lar', 'ler', 'yla', 'yle', 'ken', 'arak', 'erek', 'inca', 'ince', 'unca', 'iyle',
     'da', 'de', 'ta', 'te', 'ya', 'ye', 'yi', 'yu', 'na', 'ne', 'ni', 'nu', 'si', 'su', 'la', 'le', 'li', 'lu', 'ci', 'cu', 'ca', 'ce',
     'im', 'um', 'in', 'un', 'il', 'ul', 'ir', 'ur', 'ar', 'er', 'iz', 'uz', 'di', 'du', 'ti', 'tu', 'mis', 'mus', 'ma', 'me', 'sa', 'se', 'ip', 'up',
@@ -138,12 +145,21 @@
   }
 
   /* ================= 4. Dizin ================= */
-  const FIELDS = [['title', 5], ['q', 4], ['chip', 3], ['a', 2], ['steps', 1.3], ['tips', 1]];
+  /* ftext: veri sayfalarının bilgi tablosu ("Satıldığı yer: Doktor, Eczane") */
+  const FIELDS = [['title', 5], ['q', 4], ['chip', 3], ['a', 2], ['ftext', 1.4], ['steps', 1.3], ['tips', 1]];
   const TAG_W = 3.5;
+  /* veri sayfaları (eşya, hayvan…) aynı puanda nasıl yapılır makalelerinin biraz gerisinde kalır */
+  const ENTITY_W = 0.85;
+  /* ...ama sorgu bir veri sayfasının adını ve yalnızca fiyat / satın alma / satma sorusunu içeriyorsa
+     ("kinin nerede satılır", "arap atı kaç para", "bear pelt price") cevap o sayfanın bilgi tablosundadır */
+  const DATA_Q = new Set(['price', 'buy', 'sell', 'shop']);
+  const NAME_W = 2.5;
 
   function create(articles, concepts, opts = {}) {
     const LANGS = ['tr', 'en'];
-    const N = articles.length;
+    /* veri sayfaları (yüzlerce eşya, hayvan…) nadirlik hesabını çarpıtmasın: belge sıklığına çeyrek ağırlıkla katılırlar */
+    const docW = (A) => (A.entity ? 0.25 : 1);
+    const N = articles.reduce((n, A) => n + docW(A), 0);
     const byId = new Map(articles.map(a => [a.id, a]));
 
     const stemCache = { tr: new Map(), en: new Map() };
@@ -257,14 +273,16 @@
         }
         for (const t of A.tags || []) put(conc, t, TAG_W);
         entry[L] = { terms, conc, tdepth };
-        for (const k of terms.keys()) dfT[L].set(k, (dfT[L].get(k) || 0) + 1);
+        for (const k of terms.keys()) dfT[L].set(k, (dfT[L].get(k) || 0) + docW(A));
       }
       const cs = new Set([...entry.tr.conc.keys(), ...entry.en.conc.keys()]);
-      for (const c of cs) dfC.set(c, (dfC.get(c) || 0) + 1);
+      for (const c of cs) dfC.set(c, (dfC.get(c) || 0) + docW(A));
+      // veri sayfasının adı (ad sözcükleri; sorguda hepsi geçerse ad eşleşmesi sayılır)
+      if (A.entity) for (const L of LANGS) entry[L].name = tokenize(A.title[L]).filter(t => !isStop(L, t));
       idx.set(A.id, entry);
     }
-    const idfT = (L, k) => 1 + Math.log(N / (dfT[L].get(k) || N));
-    const idfC = (c) => 1 + Math.log(N / (dfC.get(c) || N));
+    const idfT = (L, k) => 1 + Math.log(N / Math.max(1, dfT[L].get(k) || N));
+    const idfC = (c) => 1 + Math.log(N / Math.max(1, dfC.get(c) || N));
     const vocabKeys = { tr: [...new Set([...dfT.tr.keys(), ...syn.tr.keys()])], en: [...new Set([...dfT.en.keys(), ...syn.en.keys()])] };
 
     /* ================= 5. Sorgu dalları ================= */
@@ -409,6 +427,16 @@
         const cov = matched / U;
         let s = sum * (0.3 + 0.7 * cov * cov);
         if (U >= 2 && strong === U) s *= 1.15;
+        if (A.entity) {
+          s *= ENTITY_W;
+          const nm = I.name, toks = parsed.toks;
+          const hit = nm && nm.length && nm.map(t => toks.findIndex(q => q === t || (t.length >= 4 && q.startsWith(t))));
+          if (hit && hit.every(i => i >= 0)) {
+            const inName = new Set(hit);
+            const rest = parsed.units.filter(u => !u.text.split(' ').every(w => toks.some((q, i) => q === w && inName.has(i))));
+            if (rest.length && rest.every(u => u.branches.some(b => b.k === 'c' && DATA_Q.has(b.c) && !b.rel))) s *= NAME_W;
+          }
+        }
         res.set(A.id, { s, cov });
       }
       return res;
@@ -482,8 +510,9 @@
       for (const [st, d] of cands(L, t)) if (stems.has(st) && okPair(st, 0, d)) return true;
       return false;
     }
-    /* metni HTML'e çevirir: **kalın**, [[tuş]] ve sorgu sözcüklerinin vurgusu */
-    function render(text, q, L) {
+    /* metni HTML'e çevirir: **kalın**, [[tuş]], [bağlantı](#/a/kimlik) ve sorgu sözcüklerinin vurgusu.
+       link(ad, dil, metin) verilirse kalın yazılan bir ad veri sayfasına bağlanır (kimliği döndürür) */
+    function render(text, q, L, link) {
       const stems = q ? queryStems(q, L) : null;
       const esc = (s) => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
       const hl = (s) => {
@@ -491,11 +520,15 @@
         return s.replace(/[\p{L}\p{N}]+|[^\p{L}\p{N}]+/gu, (m) => /[\p{L}\p{N}]/u.test(m) && wordHits(m, L, stems) ? `<mark>${esc(m)}</mark>` : esc(m));
       };
       let out = '';
-      const re = /\*\*(.+?)\*\*|\[\[(.+?)\]\]/g;
+      const re = /\*\*(.+?)\*\*|\[\[(.+?)\]\]|\[([^\]]+)\]\(#\/a\/([\w-]+)\)/g;
       let last = 0, m;
       while ((m = re.exec(text))) {
         out += hl(text.slice(last, m.index));
-        out += m[1] != null ? `<b>${hl(m[1])}</b>` : `<kbd>${esc(m[2])}</kbd>`;
+        if (m[1] != null) {
+          const id = link && link(m[1], L, text);
+          out += id ? `<a class="ent" href="#/a/${id}"><b>${hl(m[1])}</b></a>` : `<b>${hl(m[1])}</b>`;
+        } else if (m[2] != null) out += `<kbd>${esc(m[2])}</kbd>`;
+        else out += `<a class="ent" href="#/a/${m[4]}">${hl(m[3])}</a>`;
         last = re.lastIndex;
       }
       return out + hl(text.slice(last));
@@ -503,10 +536,11 @@
     /* makalenin sorguya en çok uyan cümlesi (sonuç listesinde gösterilir) */
     function snippet(A, q, L) {
       const stems = queryStems(q, L);
-      const pool = [A.a[L], ...(A.steps[L] || []), ...((A.tips && A.tips[L]) || [])];
+      const pool = [A.a[L], ...((A.ftext && A.ftext[L]) || []), ...(A.steps[L] || []), ...((A.tips && A.tips[L]) || [])];
       let best = pool[0], bestN = -1;
       pool.forEach((s, i) => {
-        const sentences = String(s).match(/[^.!?]+(?:[.!?]+|$)/g) || [String(s)];
+        // ondalık noktası (2.8, $4.25) cümleyi bölmez
+        const sentences = String(s).match(/(?:[^.!?]|[.!?](?=\d))+(?:[.!?]+|$)/g) || [String(s)];
         for (const sen of sentences) {
           let n = 0;
           for (const w of plain(sen).split(/[^\p{L}\p{N}]+/u)) if (w && wordHits(w, L, stems)) n++;
@@ -521,9 +555,9 @@
       search, render, snippet, parse, detect,
       suggest: (q, lang, n = 6) => search(q, { lang, partial: true, limit: n }).results,
       get: (id) => byId.get(id),
-      stats: () => ({ articles: N, concepts: Object.keys(concepts).length, vocab: { tr: vocabKeys.tr.length, en: vocabKeys.en.length } }),
+      stats: () => ({ articles: articles.length, concepts: Object.keys(concepts).length, vocab: { tr: vocabKeys.tr.length, en: vocabKeys.en.length } }),
     };
   }
 
-  return { create, fold, tokenize, stemsTR, stemsEN, dl };
+  return { create, fold, tokenize, plain, stemsTR, stemsEN, dl };
 });
