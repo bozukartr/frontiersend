@@ -11,26 +11,26 @@
         en: ['how do I stop being hungry', 'where to buy food', 'what should I eat', 'I am starving', 'most filling food'],
       },
       a: {
-        tr: 'Açlık oyun saatinde yaklaşık 2,8 azalır; sıfıra inerse saatte 2 can gider. Çarktan ya da [[T]] ile yemek ye; yiyecekleri genel mağaza, fırın ve kasaptan alabilir ya da avlayıp pişirebilirsin.',
-        en: 'Hunger drops about 2.8 per game hour; at zero you lose 2 health an hour. Eat from the wheel or press [[T]]; buy food at general stores, bakeries and butchers, or hunt and cook your own.',
+        tr: 'Açlık oyun saatinde yaklaşık 2,8 azalır; sıfıra inerse saatte {{#:c.SURV.HUNGER_HP}} can gider. Çarktan ya da [[T]] ile yemek ye; yiyecekleri genel mağaza, fırın ve kasaptan alabilir ya da avlayıp pişirebilirsin.',
+        en: 'Hunger drops about 2.8 per game hour; at zero you lose {{#:c.SURV.HUNGER_HP}} health an hour. Eat from the wheel or press [[T]]; buy food at general stores, bakeries and butchers, or hunt and cook your own.',
       },
       steps: {
         tr: [
-          'Ucuz ve doyurucu: konserve fasulye (20¢), ekmek (10¢), kuru et (30¢).',
+          'Ucuz ve doyurucu: konserve fasulye ({{$:items.beans.p}}), ekmek ({{$:items.bread.p}}), kuru et ({{$:items.jerky.p}}).',
           'Saloon ve cantinada **Sıcak Yemek Ye** (50¢) hem doyurur hem ısıtır.',
           'Avladığın eti kampta ya da evindeki ocakta pişir: pişmiş biftek çok doyurur ve can verir.',
           'Koşarken açlık 1,5 kat, soğukta daha hızlı azalır.',
         ],
         en: [
-          'Cheap and filling: canned beans (20¢), bread (10¢), jerky (30¢).',
+          'Cheap and filling: canned beans ({{$:items.beans.p}}), bread ({{$:items.bread.p}}), jerky ({{$:items.jerky.p}}).',
           '**Eat a Hot Meal** (50¢) at a saloon or cantina fills you up and warms you.',
           'Cook meat you hunt at a camp or your home stove: a cooked steak is very filling and heals.',
           'Hunger drops 1.5× faster while running, and faster in the cold.',
         ],
       },
       tips: {
-        tr: ['Çiğ et ve çiğ balık hasta edebilir; önce pişir.', '**Demir Mide** başarımı (60 öğün) yiyecekleri %20 daha doyurucu yapar.'],
-        en: ['Raw meat and raw fish can make you sick; cook them first.', 'The **Iron Stomach** achievement (60 meals) makes food 20% more filling.'],
+        tr: ['Çiğ et ve çiğ balık hasta edebilir; önce pişir.', '**{{n:achievements.eater}}** başarımı: {{n:achievements.eater.perk}}.'],
+        en: ['Raw meat and raw fish can make you sick; cook them first.', '**{{n:achievements.eater}}** achievement: {{n:achievements.eater.perk}}.'],
       },
       rel: ['cooking', 'thirst', 'health'],
     },
@@ -48,17 +48,17 @@
       },
       steps: {
         tr: [
-          '**Kahve** (20¢): biraz susuzluk, uyku ve Odak verir, ısıtır. **İthal kahve** (Saint Clement) çok daha fazla Odak verir.',
-          '**Viski** (50¢): biraz can ve Odak verir, ısıtır ama sarhoş eder. **Bira** (10¢) susuzluğu giderir.',
-          '**Güveç** (50¢): çok doyurur, can verir ve ısıtır. **Pişmiş biftek**: doyurur, can ve dayanıklılık verir.',
+          '**Kahve** ({{$:items.coffee.p}}): biraz susuzluk, uyku ve Odak verir, ısıtır. **İthal kahve** (Saint Clement) çok daha fazla Odak verir.',
+          '**Viski** ({{$:items.whiskey.p}}): biraz can ve Odak verir, ısıtır ama sarhoş eder. **Bira** ({{$:items.beer.p}}) susuzluğu giderir.',
+          '**Güveç** ({{$:items.stew.p}}): çok doyurur, can verir ve ısıtır. **Pişmiş biftek**: doyurur, can ve dayanıklılık verir.',
           '**Çikolata** ve **kremalı pasta** dayanıklılığı doldurur; **kuru et** hem doyurur hem dayanıklılık verir.',
           '**Tütün**, **sigara** ve **puro** Odak’ı doldurur; puro en güçlüsüdür.',
           '**Konserve şeftali** ve **elma** hem açlığa hem susuzluğa iyi gelir.',
         ],
         en: [
-          '**Coffee** (20¢): a little thirst, sleep and Focus, and it warms you. **Imported coffee** (Saint Clement) gives much more Focus.',
-          '**Whiskey** (50¢): some health and Focus and warmth, but it gets you drunk. **Beer** (10¢) quenches thirst.',
-          '**Stew** (50¢): very filling, heals and warms. **Cooked steak**: filling, plus health and stamina.',
+          '**Coffee** ({{$:items.coffee.p}}): a little thirst, sleep and Focus, and it warms you. **Imported coffee** (Saint Clement) gives much more Focus.',
+          '**Whiskey** ({{$:items.whiskey.p}}): some health and Focus and warmth, but it gets you drunk. **Beer** ({{$:items.beer.p}}) quenches thirst.',
+          '**Stew** ({{$:items.stew.p}}): very filling, heals and warms. **Cooked steak**: filling, plus health and stamina.',
           '**Chocolate** and **cream cake** refill stamina; **jerky** fills you up and gives stamina.',
           '**Chewing tobacco**, **cigarettes** and **cigars** fill Focus; the cigar is the strongest.',
           '**Canned peaches** and **apples** help with both hunger and thirst.',
@@ -79,8 +79,8 @@
         en: ['how do I stop being thirsty', 'how to refill the canteen', 'where can I drink water', 'drinking from a river', 'dying of thirst'],
       },
       a: {
-        tr: 'Susuzluk oyun saatinde 4 azalır ve sıfırda saatte 4 can götürür; açlıktan daha tehlikelidir. Bir **matara** al (genel mağaza, $1,20): 5 yudum alır, her yudum susuzluğu 32 doldurur. Kuyu, çeşme ve nehir başında dolar.',
-        en: 'Thirst drops 4 per game hour and costs 4 health an hour at zero, so it is more dangerous than hunger. Get a **canteen** (general store, $1.20): it holds 5 sips, each restoring 32 thirst. Refill it at wells, fountains and rivers.',
+        tr: 'Susuzluk oyun saatinde 4 azalır ve sıfırda saatte {{#:c.SURV.THIRST_HP}} can götürür; açlıktan daha tehlikelidir. Bir **matara** al (genel mağaza, {{$:items.canteen.p}}): 5 yudum alır, her yudum susuzluğu 32 doldurur. Kuyu, çeşme ve nehir başında dolar.',
+        en: 'Thirst drops 4 per game hour and costs {{#:c.SURV.THIRST_HP}} health an hour at zero, so it is more dangerous than hunger. Get a **canteen** (general store, {{$:items.canteen.p}}): it holds 5 sips, each restoring 32 thirst. Refill it at wells, fountains and rivers.',
       },
       steps: {
         tr: [
@@ -111,18 +111,18 @@
         en: ['where can I sleep', 'how do I sleep', 'I am tired', 'sleep deprivation', 'why was my sleep interrupted'],
       },
       a: {
-        tr: 'Üç yerde uyuyabilirsin: **otelde** kiraladığın odada, **kendi evinde** ya da **kampta** (uyku tulumu gerekir). Uyku oyun saatinde 3,4 azalır; sıfırda saatte 3 can gider.',
-        en: 'You can sleep in three places: a room you rent at a **hotel**, your **own home**, or at **camp** (you need a bedroll). Sleep drops 3.4 per game hour and you lose 3 health an hour at zero.',
+        tr: 'Üç yerde uyuyabilirsin: **otelde** kiraladığın odada, **kendi evinde** ya da **kampta** (uyku tulumu gerekir). Uyku oyun saatinde 3,4 azalır; sıfırda saatte {{#:c.SURV.TIRED_HP}} can gider.',
+        en: 'You can sleep in three places: a room you rent at a **hotel**, your **own home**, or at **camp** (you need a bedroll). Sleep drops 3.4 per game hour and you lose {{#:c.SURV.TIRED_HP}} health an hour at zero.',
       },
       steps: {
         tr: [
-          'Otel: resepsiyondan oda kirala ($1, bir gün geçerli), merdivenden üst kata çık, odandaki yatakta uyu.',
+          'Otel: resepsiyondan oda kirala ({{$:svc.room}}, bir gün geçerli), merdivenden üst kata çık, odandaki yatakta uyu.',
           'Ev: satın aldığın mülkün, kurduğun evin ya da malikanenin yatağı. Burada elle kayıt da alırsın.',
           'Kamp: kasabadan uzakta [[B]]’yi basılı tut, kamp ateşinde **Uyu**’yu seç.',
           'Kahve ve koklatma tuzu uykuyu bir süre açar.',
         ],
         en: [
-          'Hotel: rent a room at reception ($1, valid for a day), walk upstairs and sleep in your room’s bed.',
+          'Hotel: rent a room at reception ({{$:svc.room}}, valid for a day), walk upstairs and sleep in your room’s bed.',
           'Home: the bed in a property you bought, a house you built, or the mansion. You can also save there.',
           'Camp: away from town hold [[B]], then choose **Sleep** at the campfire.',
           'Coffee and smelling salts keep you awake for a while.',
@@ -143,28 +143,28 @@
         en: ['how do I make camp', 'I cannot set up camp', 'where to buy a bedroll', 'how to light a campfire'],
       },
       a: {
-        tr: 'Kamp için **Uyku Tulumu** gerekir (genel mağaza ya da kervan, $4,25). Kasabalardan uzakta [[B]]’yi **basılı tut**; ateş yanar ve kamp menüsü açılır.',
-        en: 'You need a **Bedroll** to camp (general store or caravan, $4.25). Away from towns, **hold** [[B]]; a fire is lit and the camp menu opens.',
+        tr: 'Kamp için **Uyku Tulumu** gerekir (genel mağaza ya da kervan, {{$:items.bedroll.p}}). Kasabalardan uzakta [[B]]’yi **basılı tut**; ateş yanar ve kamp menüsü açılır.',
+        en: 'You need a **Bedroll** to camp (general store or caravan, {{$:items.bedroll.p}}). Away from towns, **hold** [[B]]; a fire is lit and the camp menu opens.',
       },
       steps: {
         tr: [
           'Uyku tulumunu genel mağazadan ya da kervandan bir kez alırsın; kamp kurdukça bitmez.',
           'Kasabanın içinde kamp kurulmaz; biraz uzaklaş.',
           'Kamp ateşinin yanında [[E]] ile **Kamp Menüsü**: Uyu, Pişir ve Üret, Ateş Başında Bekle, Mızıka Çal, Oyunu Kaydet, Kampı Topla.',
-          'Ateş seni en çok 26 °C’ye kadar ısıtır; soğuk gecelerde can kurtarır.',
+          'Ateş seni en çok {{#:c.SURV.WARM_CAP}} °C’ye kadar ısıtır; soğuk gecelerde can kurtarır.',
           'Kamp tuşuna kısa basmak kamp kurmaz, büyük radarı açar.',
         ],
         en: [
           'You buy a bedroll once from a general store or caravan; it never wears out.',
           'You cannot camp inside a town; move away first.',
           'Press [[E]] by the fire for the **Camp Menu**: Sleep, Cook and Craft, Wait by the Fire, Play Harmonica, Save Game, Pack Up Camp.',
-          'The fire warms you up to 26 °C at most, which saves lives on cold nights.',
+          'The fire warms you up to {{#:c.SURV.WARM_CAP}} °C at most, which saves lives on cold nights.',
           'Tapping the camp key does not make camp; it opens the big radar.',
         ],
       },
       tips: {
-        tr: ['**Kamp Ateşi** başarımı (10 kamp) kampta pişen yemekleri %30 daha besleyici yapar.'],
-        en: ['The **Campfire** achievement (10 camps) makes food cooked at camp 30% more nourishing.'],
+        tr: ['**{{n:achievements.camper}}** başarımı: {{n:achievements.camper.perk}}.'],
+        en: ['**{{n:achievements.camper}}** achievement: {{n:achievements.camper.perk}}.'],
       },
       rel: ['cooking', 'sleep', 'temperature'],
     },
@@ -185,17 +185,17 @@
           'Pişirme: çiğ av eti, iri et, kuş eti ve balık pişirilince çok daha doyurucu olur ve hastalık riski kalkar.',
           '**Güveç**: çiğ av eti + mısır + kekik.',
           '**Kahve**: nane + adaçayı.',
-          '**Bitki Toniği**: ginseng + 2 civanperçemi. **Enerji Toniği**: ginseng + nane + ipekotu.',
-          '**Bandaj**: civanperçemi + ipekotu. **Panzehir**: yılan derisi + 2 adaçayı.',
-          '**Ok (5 adet)**: 3 tüy.',
+          '**Bitki Toniği**: ginseng + {{#:recipes.herbal.need.yarrow}} civanperçemi. **Enerji Toniği**: ginseng + nane + ipekotu.',
+          '**Bandaj**: civanperçemi + ipekotu. **Panzehir**: yılan derisi + {{#:recipes.antidote.need.sage}} adaçayı.',
+          '**Ok ({{#:recipes.arrows.outAmmo.arrow}} adet)**: {{#:recipes.arrows.need.feather}} tüy.',
         ],
         en: [
           'Cooking: raw game, big game, bird meat and fish become far more filling and no longer risk sickness.',
           '**Stew**: raw game meat + corn + oregano.',
           '**Coffee**: mint + sage.',
-          '**Herbal Tonic**: ginseng + 2 yarrow. **Stamina Tonic**: ginseng + mint + milkweed.',
-          '**Bandage**: yarrow + milkweed. **Antidote**: snakeskin + 2 sage.',
-          '**Arrows (5)**: 3 feathers.',
+          '**Herbal Tonic**: ginseng + {{#:recipes.herbal.need.yarrow}} yarrow. **Stamina Tonic**: ginseng + mint + milkweed.',
+          '**Bandage**: yarrow + milkweed. **Antidote**: snakeskin + {{#:recipes.antidote.need.sage}} sage.',
+          '**Arrows ({{#:recipes.arrows.outAmmo.arrow}})**: {{#:recipes.arrows.need.feather}} feathers.',
         ],
       },
       tips: {
@@ -219,14 +219,14 @@
       steps: {
         tr: [
           'Kendiliğinden dolma hızı oyun saatinde 7 can; açlık ve susuzluk 60’ın üstündeyse 13, uyurken daha fazla.',
-          '**Sağlık İksiri** +60, **Bitki Toniği** +35, **Bandaj** +25 can verir.',
-          'Doktor $2 karşılığında canını, hastalığını ve zehrini tamamen iyileştirir.',
+          '**Sağlık İksiri** +{{#:items.health_cure.e.health}}, **Bitki Toniği** +{{#:items.herbal_tonic.e.health}}, **Bandaj** +{{#:items.bandage.e.health}} can verir.',
+          'Doktor {{$:svc.heal}} karşılığında canını, hastalığını ve zehrini tamamen iyileştirir.',
           'Sıcak kaynaklarda dinlenmek de canını doldurur.',
         ],
         en: [
           'Natural regeneration is 7 health per game hour; 13 if hunger and thirst are above 60, and more while sleeping.',
-          'A **Health Cure** gives +60, an **Herbal Tonic** +35, a **Bandage** +25.',
-          'A doctor fully heals your health, sickness and poison for $2.',
+          'A **Health Cure** gives +{{#:items.health_cure.e.health}}, an **Herbal Tonic** +{{#:items.herbal_tonic.e.health}}, a **Bandage** +{{#:items.bandage.e.health}}.',
+          'A doctor fully heals your health, sickness and poison for {{$:svc.heal}}.',
           'Soaking in a hot spring also restores your health.',
         ],
       },
@@ -251,18 +251,18 @@
       steps: {
         tr: [
           '1. aşama (Üşüyorsun / Sıcak basıyor): soğukta açlık, sıcakta susuzluk hızlanır. Can gitmez.',
-          '2. aşama (Titriyorsun / Sıcaktan bitkinsin): %12 yavaş yürürsün, nişan dağılır, can dolmaz.',
+          '2. aşama (Titriyorsun / Sıcaktan bitkinsin): {{%#:d.stage2SlowPct}} yavaş yürürsün, nişan dağılır, can dolmaz.',
           '3. aşama (Donuyorsun / Sıcak çarpması): maruz kaldıkça saatte birkaç can gider.',
-          'Soğuğa: kürk manto (+18 °C), kuzu postu ceket (+11 °C), uzun palto (+5 °C), panço (+3 °C, yağmurda ıslanmazsın).',
-          'Sıcağa: keten gömlek (−5 °C), geniş kenarlı şapka (−2 °C), sarsaparilla (3 saat serinletir).',
+          'Soğuğa: kürk manto (+{{#:items.coat_fur.warm}} °C), kuzu postu ceket (+{{#:items.coat_sheep.warm}} °C), uzun palto (+{{#:items.coat_duster.warm}} °C), panço (+{{#:items.coat_poncho.warm}} °C, yağmurda ıslanmazsın).',
+          'Sıcağa: keten gömlek ({{#:items.coat_linen.warm}} °C), geniş kenarlı şapka (−2 °C), sarsaparilla ({{#:items.sarsaparilla.e.cool}} saat serinletir).',
           'Bina içi yükü hızla azaltır; içerisi yaklaşık 21 °C’dir.',
         ],
         en: [
           'Stage 1 (Chilly / Feeling the heat): hunger rises faster in the cold, thirst in the heat. No health loss.',
-          'Stage 2 (Shivering / Heat exhaustion): you walk 12% slower, your aim spreads and health stops regenerating.',
+          'Stage 2 (Shivering / Heat exhaustion): you walk {{%#:d.stage2SlowPct}} slower, your aim spreads and health stops regenerating.',
           'Stage 3 (Freezing / Heatstroke): you lose a few health per hour as long as the exposure lasts.',
-          'For the cold: fur coat (+18 °C), sheepskin coat (+11 °C), duster (+5 °C), poncho (+3 °C, keeps the rain off).',
-          'For the heat: linen shirt (−5 °C), wide-brimmed hat (−2 °C), sarsaparilla (cools you for 3 hours).',
+          'For the cold: fur coat (+{{#:items.coat_fur.warm}} °C), sheepskin coat (+{{#:items.coat_sheep.warm}} °C), duster (+{{#:items.coat_duster.warm}} °C), poncho (+{{#:items.coat_poncho.warm}} °C, keeps the rain off).',
+          'For the heat: linen shirt ({{#:items.coat_linen.warm}} °C), wide-brimmed hat (−2 °C), sarsaparilla (cools you for {{#:items.sarsaparilla.e.cool}} hours).',
           'Going indoors clears the load fast; inside it is about 21 °C.',
         ],
       },
@@ -281,26 +281,26 @@
         en: ['a snake bit me what do I do', 'how do I cure poison', 'where to buy antidote', 'I am poisoned', 'what does snake oil do'],
       },
       a: {
-        tr: 'Çıngıraklı yılan seni yaklaşık **6 oyun saati** zehirler. Zehir tek başına canını %15’in altına indirmez ama bu sürede can dolmaz. **Panzehir** ya da **Yılan Yağı** zehri hemen söker; doktor da tedavi eder.',
-        en: 'A rattlesnake poisons you for about **6 game hours**. Poison alone will not drop you below 15% health, but your health will not refill meanwhile. An **Antidote** or **Snake Oil** clears it at once; a doctor can treat it too.',
+        tr: 'Çıngıraklı yılan seni yaklaşık **{{#:d.poisonH}} oyun saati** zehirler. Zehir tek başına canını {{%#:d.poisonFloorPct}} düzeyinin altına indirmez ama bu sürede can dolmaz. **Panzehir** ya da **Yılan Yağı** zehri hemen söker; doktor da tedavi eder.',
+        en: 'A rattlesnake poisons you for about **{{#:d.poisonH}} game hours**. Poison alone will not drop you below {{%#:d.poisonFloorPct}} health, but your health will not refill meanwhile. An **Antidote** or **Snake Oil** clears it at once; a doctor can treat it too.',
       },
       steps: {
         tr: [
           'Zehirliyken [[T]] önce panzehiri kullanır.',
-          'Panzehir ($1,50) doktor, eczane ve münzevide; yılan yağı ($1) daha birçok yerde satılır.',
-          'Kendin de yapabilirsin: yılan derisi + 2 adaçayı.',
-          'Laudanum 3 saat boyunca zehir dahil her hasarı %40 azaltır.',
+          'Panzehir ({{$:items.antidote.p}}) doktor, eczane ve münzevide; yılan yağı ({{$:items.snake_oil.p}}) daha birçok yerde satılır.',
+          'Kendin de yapabilirsin: yılan derisi + {{#:recipes.antidote.need.sage}} adaçayı.',
+          'Laudanum {{#:items.laudanum.e.pain}} saat boyunca zehir dahil her hasarı %40 azaltır.',
         ],
         en: [
           'While poisoned, [[T]] uses an antidote first.',
-          'Antidote ($1.50) is sold by doctors, pharmacies and the hermit; snake oil ($1) in many more places.',
-          'You can craft it yourself: snakeskin + 2 sage.',
-          'Laudanum reduces all damage, poison included, by 40% for 3 hours.',
+          'Antidote ({{$:items.antidote.p}}) is sold by doctors, pharmacies and the hermit; snake oil ({{$:items.snake_oil.p}}) in many more places.',
+          'You can craft it yourself: snakeskin + {{#:recipes.antidote.need.sage}} sage.',
+          'Laudanum reduces all damage, poison included, by 40% for {{#:items.laudanum.e.pain}} hours.',
         ],
       },
       tips: {
-        tr: ['Asıl tehlike zehirliyken yeni bir sokma ya da yara almaktır; her yeni sokma zehri 2 saat uzatır.', 'At sırtındayken yılan seni zehirleyemez.'],
-        en: ['The real danger is a new bite or wound while poisoned; each extra bite adds 2 hours.', 'Snakes cannot poison you while you are on horseback.'],
+        tr: ['Asıl tehlike zehirliyken yeni bir sokma ya da yara almaktır; her yeni sokma zehri {{#:d.poisonMoreH}} saat uzatır.', 'At sırtındayken yılan seni zehirleyemez.'],
+        en: ['The real danger is a new bite or wound while poisoned; each extra bite adds {{#:d.poisonMoreH}} hours.', 'Snakes cannot poison you while you are on horseback.'],
       },
       rel: ['medicine', 'predators', 'cooking'],
     },
@@ -313,18 +313,18 @@
         en: ['I got sick', 'how to cure sickness', 'what does quinine do', 'why did I get sick', 'I have a fever'],
       },
       a: {
-        tr: 'Çiğ et ya da balık yemek, nehir ve gölden su içmek ve ileri yaş seni hasta edebilir. Hastayken saatte 2,5 can gider ve can dolmaz. **Kinin** iyileştirir ve bir gün boyunca seni korur.',
-        en: 'Eating raw meat or fish, drinking from rivers and lakes, and old age can make you sick. While sick you lose 2.5 health an hour and do not regenerate. **Quinine** cures it and protects you for a day.',
+        tr: 'Çiğ et ya da balık yemek, nehir ve gölden su içmek ve ileri yaş seni hasta edebilir. Hastayken saatte {{#:c.SURV.SICK_HP}} can gider ve can dolmaz. **Kinin** iyileştirir ve bir gün boyunca seni korur.',
+        en: 'Eating raw meat or fish, drinking from rivers and lakes, and old age can make you sick. While sick you lose {{#:c.SURV.SICK_HP}} health an hour and do not regenerate. **Quinine** cures it and protects you for a day.',
       },
       steps: {
         tr: [
-          'Kinin ($1,20) doktor, eczane, kervan ve münzevide satılır.',
+          'Kinin ({{$:items.quinine.p}}) doktor, eczane, kervan ve münzevide satılır.',
           'Bitki Toniği ve Yılan Yağı da hastalığı geçirir; doktor ve sıcak kaynak da iyileştirir.',
           'Kirli sudan hastalık yaklaşık 6, çiğ etten 8 oyun saati sürer.',
           'Korunmak için eti pişir, kuyu ve çeşmeden su iç.',
         ],
         en: [
-          'Quinine ($1.20) is sold by doctors, pharmacies, caravans and the hermit.',
+          'Quinine ({{$:items.quinine.p}}) is sold by doctors, pharmacies, caravans and the hermit.',
           'Herbal Tonic and Snake Oil cure it too; doctors and hot springs heal it as well.',
           'Sickness from dirty water lasts about 6 game hours, from raw meat about 8.',
           'To avoid it, cook your meat and drink from wells and fountains.',
@@ -345,19 +345,19 @@
         en: ['I fainted what happened', 'why did I pass out', 'what happens when I faint', 'I lost what I was carrying'],
       },
       a: {
-        tr: 'Sıcak, soğuk, açlık, susuzluk, uykusuzluk ya da hastalık canını %10’a indirince ölmeden önce **bayılırsın**. 2–4 saat sonra olduğun yerde kendine gelirsin ya da yoldan geçen biri seni en yakın doktora götürür ($3).',
-        en: 'When heat, cold, hunger, thirst, lack of sleep or sickness drops you to 10% health, you **faint** before dying. You wake where you fell 2–4 hours later, or a passer-by takes you to the nearest doctor ($3).',
+        tr: 'Sıcak, soğuk, açlık, susuzluk, uykusuzluk ya da hastalık canını {{%#:d.faintPct}} düzeyine indirince ölmeden önce **bayılırsın**. {{#-:c.SURV.FAINT_H}} saat sonra olduğun yerde kendine gelirsin ya da yoldan geçen biri seni en yakın doktora götürür ({{$:c.SURV.FAINT_FEE}}).',
+        en: 'When heat, cold, hunger, thirst, lack of sleep or sickness drops you to {{%#:d.faintPct}} health, you **faint** before dying. You wake where you fell {{#-:c.SURV.FAINT_H}} hours later, or a passer-by takes you to the nearest doctor ({{$:c.SURV.FAINT_FEE}}).',
       },
       steps: {
         tr: [
-          'Kendine gelince canın en az %15’tir; önce sebebi gider (su iç, ısın, ye).',
-          'Kendine geldikten sonraki 12 oyun saatinde can yine biterse bu kez bayılmadan ölürsün.',
+          'Kendine gelince canın en az {{%#:d.faintWakePct}} olur; önce sebebi gider (su iç, ısın, ye).',
+          'Kendine geldikten sonraki {{#:d.faintCdH}} oyun saatinde can yine biterse bu kez bayılmadan ölürsün.',
           'Aranırken kimse seni doktora götürmez.',
           'Omzundaki yük olduğun yere düşer, kement elinden kayar.',
         ],
         en: [
-          'You wake with at least 15% health; fix the cause first (drink, warm up, eat).',
-          'If your health runs out again within 12 game hours, you die without fainting.',
+          'You wake with at least {{%#:d.faintWakePct}} health; fix the cause first (drink, warm up, eat).',
+          'If your health runs out again within {{#:d.faintCdH}} game hours, you die without fainting.',
           'Nobody takes you to a doctor while you are wanted.',
           'Whatever you were carrying drops where you fell and your lasso slips away.',
         ],
@@ -409,8 +409,8 @@
         en: ['where is the nearest doctor', 'how much does a doctor cost', 'what does the pharmacy sell', 'how do I get treatment'],
       },
       a: {
-        tr: 'Doktorda **Tedavi Ol** ($2) canını, hastalığını ve zehrini tamamen iyileştirir (30 oyun dakikası). Doktor ve eczane ilaç da satar; eczane ayrıca sarsaparilla ve tütün bulundurur.',
-        en: 'At a doctor, **Get Treatment** ($2) fully heals your health, sickness and poison (30 game minutes). Doctors and pharmacies also sell medicine; pharmacies stock sarsaparilla and tobacco too.',
+        tr: 'Doktorda **Tedavi Ol** ({{$:svc.heal}}) canını, hastalığını ve zehrini tamamen iyileştirir (30 oyun dakikası). Doktor ve eczane ilaç da satar; eczane ayrıca sarsaparilla ve tütün bulundurur.',
+        en: 'At a doctor, **Get Treatment** ({{$:svc.heal}}) fully heals your health, sickness and poison (30 game minutes). Doctors and pharmacies also sell medicine; pharmacies stock sarsaparilla and tobacco too.',
       },
       steps: {
         tr: [
@@ -425,8 +425,8 @@
         ],
       },
       tips: {
-        tr: ['**Aziz** başarımı (onur 80) doktoru yarı fiyata indirir.'],
-        en: ['The **Saint** achievement (honor 80) halves doctor prices.'],
+        tr: ['**{{n:achievements.saint}}** başarımı: {{n:achievements.saint.perk}}.'],
+        en: ['**{{n:achievements.saint}}** achievement: {{n:achievements.saint.perk}}.'],
       },
       rel: ['medicine', 'health', 'map'],
     },
@@ -444,20 +444,20 @@
       },
       steps: {
         tr: [
-          '**Sağlık İksiri** ($1): +60 can. **Bandaj** (20¢): +25 can. **Bitki Toniği** (70¢): +35 can, hastalığı geçirir.',
-          '**Enerji Toniği** (70¢): dayanıklılığı doldurur.',
-          '**Panzehir** ($1,50) ve **Yılan Yağı** ($1): zehri söker; yılan yağı hastalığı da geçirir, Odak verir.',
-          '**Kinin** ($1,20): hastalığı geçirir, bir gün korur.',
-          '**Laudanum** ($1,50): 3 saat %40 az hasar alırsın; başını döndürür, uykunu getirir.',
-          '**Kas Merhemi** (85¢): 2 saat koşarken dayanıklılık geç tükenir. **Koklatma Tuzu** (60¢): sarhoşluğu ve uykuyu dağıtır. **Sarsaparilla** (20¢): susuzluğu giderir, sıcakta serinletir.',
+          '**Sağlık İksiri** ({{$:items.health_cure.p}}): +{{#:items.health_cure.e.health}} can. **Bandaj** ({{$:items.bandage.p}}): +{{#:items.bandage.e.health}} can. **Bitki Toniği** ({{$:items.herbal_tonic.p}}): +{{#:items.herbal_tonic.e.health}} can, hastalığı geçirir.',
+          '**Enerji Toniği** ({{$:items.stamina_tonic.p}}): dayanıklılığı doldurur.',
+          '**Panzehir** ({{$:items.antidote.p}}) ve **Yılan Yağı** ({{$:items.snake_oil.p}}): zehri söker; yılan yağı hastalığı da geçirir, Odak verir.',
+          '**Kinin** ({{$:items.quinine.p}}): hastalığı geçirir, bir gün korur.',
+          '**Laudanum** ({{$:items.laudanum.p}}): {{#:items.laudanum.e.pain}} saat %40 az hasar alırsın; başını döndürür, uykunu getirir.',
+          '**Kas Merhemi** ({{$:items.liniment.p}}): {{#:items.liniment.e.limber}} saat koşarken dayanıklılık geç tükenir. **Koklatma Tuzu** ({{$:items.smelling_salts.p}}): sarhoşluğu ve uykuyu dağıtır. **Sarsaparilla** ({{$:items.sarsaparilla.p}}): susuzluğu giderir, sıcakta serinletir.',
         ],
         en: [
-          '**Health Cure** ($1): +60 health. **Bandage** (20¢): +25 health. **Herbal Tonic** (70¢): +35 health and cures sickness.',
-          '**Stamina Tonic** (70¢): refills stamina.',
-          '**Antidote** ($1.50) and **Snake Oil** ($1): clear poison; snake oil also cures sickness and fills Focus.',
-          '**Quinine** ($1.20): cures sickness and protects you for a day.',
-          '**Laudanum** ($1.50): 40% less damage for 3 hours, but it makes you dizzy and sleepy.',
-          '**Liniment** (85¢): stamina lasts much longer while running for 2 hours. **Smelling Salts** (60¢): clear drunkenness and drowsiness. **Sarsaparilla** (20¢): quenches thirst and cools you in the heat.',
+          '**Health Cure** ({{$:items.health_cure.p}}): +{{#:items.health_cure.e.health}} health. **Bandage** ({{$:items.bandage.p}}): +{{#:items.bandage.e.health}} health. **Herbal Tonic** ({{$:items.herbal_tonic.p}}): +{{#:items.herbal_tonic.e.health}} health and cures sickness.',
+          '**Stamina Tonic** ({{$:items.stamina_tonic.p}}): refills stamina.',
+          '**Antidote** ({{$:items.antidote.p}}) and **Snake Oil** ({{$:items.snake_oil.p}}): clear poison; snake oil also cures sickness and fills Focus.',
+          '**Quinine** ({{$:items.quinine.p}}): cures sickness and protects you for a day.',
+          '**Laudanum** ({{$:items.laudanum.p}}): 40% less damage for {{#:items.laudanum.e.pain}} hours, but it makes you dizzy and sleepy.',
+          '**Liniment** ({{$:items.liniment.p}}): stamina lasts much longer while running for {{#:items.liniment.e.limber}} hours. **Smelling Salts** ({{$:items.smelling_salts.p}}): clear drunkenness and drowsiness. **Sarsaparilla** ({{$:items.sarsaparilla.p}}): quenches thirst and cools you in the heat.',
         ],
       },
       tips: {
@@ -505,8 +505,8 @@
         en: ['how do I wash', 'where can I take a bath', 'I am dirty', 'how to raise cleanliness', 'how to get a haircut', 'how to change my beard'],
       },
       a: {
-        tr: 'Otelde ya da çamaşırhanede **Sıcak Banyo** (50¢) seni tertemiz yapar ve ısıtır. Binalardaki lavaboda el yüz yıkamak temizliği biraz artırır. Saç ve sakal için **berbere** git (30¢).',
-        en: 'A **Hot Bath** (50¢) at a hotel or laundry gets you spotless and warm. Washing up at a basin indoors helps a little. For hair and beard, visit the **barber** (30¢).',
+        tr: 'Otelde ya da çamaşırhanede **Sıcak Banyo** ({{$:svc.bath}}) seni tertemiz yapar ve ısıtır. Binalardaki lavaboda el yüz yıkamak temizliği biraz artırır. Saç ve sakal için **berbere** git ({{$:svc.barber}}).',
+        en: 'A **Hot Bath** ({{$:svc.bath}}) at a hotel or laundry gets you spotless and warm. Washing up at a basin indoors helps a little. For hair and beard, visit the **barber** ({{$:svc.barber}}).',
       },
       steps: {
         tr: [
@@ -535,8 +535,8 @@
         en: ['does my character age', 'is there an age limit', 'what happens as I get older', 'how to change aging pace'],
       },
       a: {
-        tr: 'Hayata 18 yaşında başlarsın ve yaşlanırsın; yaş sınırı yoktur, oyun ancak ölünce biter. 30’lardan sonra dayanıklılık, 50’den sonra en yüksek can yavaş yavaş azalır.',
-        en: 'You start at 18 and grow older; there is no age limit and the game only ends when you die. After your early 30s stamina, and after 50 max health, slowly decline.',
+        tr: 'Hayata {{#:c.START_AGE}} yaşında başlarsın ve yaşlanırsın; yaş sınırı yoktur, oyun ancak ölünce biter. 30’lardan sonra dayanıklılık, 50’den sonra en yüksek can yavaş yavaş azalır.',
+        en: 'You start at {{#:c.START_AGE}} and grow older; there is no age limit and the game only ends when you die. After your early 30s stamina, and after 50 max health, slowly decline.',
       },
       steps: {
         tr: [

@@ -2,9 +2,19 @@
 (function () {
   'use strict';
   const { CATS, FAQ, UI } = window.WIKI_APP;
-  const ARTICLES = window.WIKI_ARTICLES || [];
+  const G = window.WIKI_GAME, DATA = window.WikiData;
+  const BASE = window.WIKI_ARTICLES || [];
+  // makalelerdeki sayılar ve veri sayfaları oyunun verisinden (assets/data/game.js) gelir
+  let ENT = [];
+  if (G && DATA) {
+    const errs = DATA.fill(BASE, G);
+    if (errs.length) console.warn('Wiki: çözülemeyen yer tutucular', errs);
+    ENT = DATA.entities(G);
+  }
+  const ARTICLES = BASE.concat(ENT);
   const ENGINE = window.WikiSearch.create(ARTICLES, window.WIKI_CONCEPTS || {});
   const byId = new Map(ARTICLES.map(a => [a.id, a]));
+  const NAMES = DATA ? DATA.nameIndex(ENT, window.WikiSearch.fold) : null;
 
   const $ = (s, r = document) => r.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -22,6 +32,10 @@
     town: '<path d="M3 20h18"/><path d="M5 20v-9l4-3 4 3v9"/><path d="M13 20v-7h6v7"/><path d="M9 20v-4"/>',
     house: '<path d="M4 11 12 4l8 7"/><path d="M6 10v10h12V10"/><path d="M10 20v-6h4v6"/>',
     gear: '<circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M4.5 4.5l2.1 2.1M17.4 17.4l2.1 2.1M2.8 12h3M18.2 12h3M4.5 19.5l2.1-2.1M17.4 6.6l2.1-2.1"/>',
+    bag: '<path d="M5.5 8.5h13l-1.2 11.5H6.7z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/>',
+    gun: '<path d="M3 8h17v3.2h-9.5L9 18.5H5.2l1.6-7.3H3z"/><path d="M10.5 11.2c0 1.6 1 2.3 2.6 2.3"/>',
+    pin: '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+    trophy: '<path d="M8 4h8v5.5a4 4 0 0 1-8 0z"/><path d="M8 6H5.2c0 2.4 1.2 4 2.9 4.3M16 6h2.8c0 2.4-1.2 4-2.9 4.3"/><path d="M12 13.5V17M8.5 20h7"/>',
     arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
     back: '<path d="M19 12H5M11 18l-6-6 6-6"/>',
     link: '<path d="M10 13.5a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10.5a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/>',
@@ -71,17 +85,31 @@
 
   /* ---------- parçalar ---------- */
   const catLabel = (A) => { const C = CATS[A.cat]; return `<a class="cat" href="#/topics/${A.cat}">${ico(C.icon)}${esc(C[lang])}</a>`; };
-  const r = (text, q) => ENGINE.render(text, q, lang);
+  /* makalelerde kalın yazılan adlar (**Kinin**) o adın veri sayfasına bağlanır; başarım adları yalnız
+     "başarım" geçen cümlede bağlanır (Kanun Kaçağı hem başlangıç hem başarım adıdır) */
+  let here = '';
+  const linkName = (name, L, text) => {
+    const A = NAMES && NAMES[L].get(window.WikiSearch.fold(name));
+    if (!A || A.id === here) return null;
+    if (A.entity === 'ach' && here !== 'achievements' && !/başarım|achievement/i.test(text)) return null;
+    return A.id;
+  };
+  const r = (text, q) => ENGINE.render(text, q, lang, linkName);
   const stepsHtml = (A, q) => `<ol class="steps">${A.steps[lang].map(s => `<li>${r(s, q)}</li>`).join('')}</ol>`;
+  const factsHtml = (A, q) => (A.facts[lang].length ? `<dl class="facts">${A.facts[lang].map(([l, v]) => `<div><dt>${esc(l)}</dt><dd>${r(v, q)}</dd></div>`).join('')}</dl>` : '');
+  const bodyHtml = (A, q) => (A.entity ? factsHtml(A, q) : stepsHtml(A, q));
 
   function answerCard(A, q) {
-    return `<section class="card">
+    here = A.id;
+    const html = `<section class="card">
       ${catLabel(A)}
       <h2><a href="#/a/${A.id}">${esc(A.title[lang])}</a></h2>
       <p class="lead">${r(A.a[lang], q)}</p>
-      ${stepsHtml(A, q)}
+      ${bodyHtml(A, q)}
       <a class="more" href="#/a/${A.id}">${esc(T().readMore)}${ico('arrow')}</a>
     </section>`;
+    here = '';
+    return html;
   }
 
   function showHome() {
@@ -140,19 +168,22 @@
     document.title = `${A.title[lang]} · ${t.htmlTitle}`;
     const tips = (A.tips && A.tips[lang]) || [];
     const rel = (A.rel || []).map(x => byId.get(x)).filter(Boolean);
+    here = A.id;
+    const money = A.entity && A.facts[lang].some(([, v]) => /[$¢]/.test(v));
     view.innerHTML = `<article class="article">
       ${catLabel(A)}
       <h1>${esc(A.title[lang])}</h1>
       <p class="lead">${r(A.a[lang], q)}</p>
-      <h3>${esc(t.steps)}</h3>
-      ${stepsHtml(A, q)}
+      ${A.entity ? factsHtml(A, q) : `<h3>${esc(t.steps)}</h3>${stepsHtml(A, q)}`}
       ${tips.length ? `<h3>${esc(t.tips)}</h3><ul class="tips">${tips.map(s => `<li>${r(s, q)}</li>`).join('')}</ul>` : ''}
+      ${A.entity ? `<p class="dbnote">${money ? esc(t.priceNote) + ' ' : ''}${esc(t.dbNote(G.meta.version))}</p>` : ''}
       ${rel.length ? `<h3>${esc(t.related)}</h3><div class="rel">${rel.map(R => `<a class="chip" href="#/a/${R.id}">${ico(CATS[R.cat].icon)}${esc(R.title[lang])}</a>`).join('')}</div>` : ''}
       <div class="actions">
         ${q ? `<a class="ghost" href="#/q/${enc(q)}">${ico('back')}${esc(t.back)}</a>` : ''}
         <button class="ghost copy" type="button">${ico('link')}${esc(t.copy)}</button>
       </div>
     </article>`;
+    here = '';
     $('.copy', view).addEventListener('click', copyLink);
     window.scrollTo(0, 0);
   }
@@ -163,15 +194,24 @@
     document.title = `${t.allTopics} · ${t.htmlTitle}`;
     input.value = '';
     syncButtons();
-    const boxes = Object.entries(CATS).map(([k, C]) => {
+    const box = (k, C, inner, n) => `<section class="catbox${C.db ? ' db' : ''}" id="cat-${k}"><h2>${ico(C.icon)}${esc(C[lang])}<small>${n}</small></h2>${inner}</section>`;
+    const links = (as) => as.map(A => `<a href="#/a/${A.id}">${esc(A.title[lang])}</a>`).join('<span class="sep"> · </span>');
+    const boxes = Object.entries(CATS).filter(([, C]) => !C.db).map(([k, C]) => {
       const items = ARTICLES.filter(A => A.cat === k);
-      if (!items.length) return '';
-      return `<section class="catbox" id="cat-${k}"><h2>${ico(C.icon)}${esc(C[lang])}<small>${items.length}</small></h2>
-        <ul>${items.map(A => `<li><a href="#/a/${A.id}">${esc(A.title[lang])}</a></li>`).join('')}</ul></section>`;
+      return items.length ? box(k, C, `<ul>${items.map(A => `<li><a href="#/a/${A.id}">${esc(A.title[lang])}</a></li>`).join('')}</ul>`, items.length) : '';
     }).join('');
-    view.innerHTML = `<section class="topics"><h1>${esc(t.allTopics)}</h1><div class="cats">${boxes}</div></section>`;
-    const box = focusCat && document.getElementById('cat-' + focusCat);
-    if (box) box.scrollIntoView({ block: 'start' }); else window.scrollTo(0, 0);
+    // veri sayfaları: kısa adlar yan yana; eşyalar kendi türlerine göre gruplanır
+    const dbBoxes = Object.entries(CATS).filter(([, C]) => C.db).map(([k, C]) => {
+      const items = ARTICLES.filter(A => A.cat === k).sort((a, b) => a.title[lang].localeCompare(b.title[lang], lang));
+      if (!items.length) return '';
+      if (k !== 'db-item') return box(k, C, `<p class="inl">${links(items)}</p>`, items.length);
+      const groups = Object.keys(DATA.ICAT).map(g => [g, items.filter(A => A.group === g)]).filter(([, as]) => as.length);
+      return box(k, C, groups.map(([g, as]) => `<h3>${esc(DATA.ICAT[g][lang])}</h3><p class="inl">${links(as)}</p>`).join(''), items.length);
+    }).join('');
+    view.innerHTML = `<section class="topics"><h1>${esc(t.allTopics)}</h1><div class="cats">${boxes}</div>
+      ${dbBoxes ? `<h2 class="dbhead">${esc(t.db)}</h2><p class="dbhint">${esc(t.dbHint)}</p><div class="cats dbcats">${dbBoxes}</div>` : ''}</section>`;
+    const focus = focusCat && document.getElementById('cat-' + focusCat);
+    if (focus) focus.scrollIntoView({ block: 'start' }); else window.scrollTo(0, 0);
   }
 
   /* ---------- yönlendirme ---------- */

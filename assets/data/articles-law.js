@@ -48,13 +48,13 @@
       },
       steps: {
         tr: [
-          'Aranırken şerif ofisine kendi ayağınla girersen kanun **30 saniye** ateş etmez.',
+          'Aranırken şerif ofisine kendi ayağınla girersen kanun **{{#:c.TRUCE_SEC}} saniye** ateş etmez.',
           'O sürede kanun adamının yanında ya da şerifin masasında **Teslim Ol**.',
           'Ofisten çıkınca süre durur; ateş etmek ya da suç işlemek ateşkesi bozar.',
           'Aranmıyor ama başında ödül varsa şerif seni masaya çağırır, ödülü orada ödersin.',
         ],
         en: [
-          'Walk into a sheriff’s office while wanted and the law holds fire for **30 seconds**.',
+          'Walk into a sheriff’s office while wanted and the law holds fire for **{{#:c.TRUCE_SEC}} seconds**.',
           'In that time choose **Surrender** next to a lawman or at the sheriff’s desk.',
           'The timer pauses when you step outside; shooting or committing a crime breaks the truce.',
           'If you are not wanted but have a bounty, the sheriff calls you over to pay it at the desk.',
@@ -75,8 +75,8 @@
         en: ['bounty hunters are after me', 'how to get rid of bounty hunters', 'is killing bounty hunters a crime', 'why do I keep getting attacked'],
       },
       a: {
-        tr: 'Başında **$20 ya da daha fazla** ödül varken kasaba dışında 2–4 kişilik ödül avcısı grupları çıkar; ödül büyüdükçe daha sık gelirler. Önce yaklaşıp seslenirler ve bir süre beklerler.',
-        en: 'While your bounty is **$20 or more**, groups of 2–4 bounty hunters show up outside towns, more often as the bounty grows. They ride up, call out and wait a moment first.',
+        tr: 'Başında **{{$:c.HUNTER_MIN}} ya da daha fazla** ödül varken kasaba dışında 2–4 kişilik ödül avcısı grupları çıkar; ödül büyüdükçe daha sık gelirler. Önce yaklaşıp seslenirler ve bir süre beklerler.',
+        en: 'While your bounty is **{{$:c.HUNTER_MIN}} or more**, groups of 2–4 bounty hunters show up outside towns, more often as the bounty grows. They ride up, call out and wait a moment first.',
       },
       steps: {
         tr: [
@@ -112,12 +112,12 @@
       },
       steps: {
         tr: [
-          '**Bandana** (30¢): genel mağaza, terzi, kaçakçı, kervan. **Çuval maske** (10¢): kaçakçı.',
+          '**Bandana** ({{$:items.mask_bandana.p}}): genel mağaza, terzi, kaçakçı, kervan. **Çuval maske** ({{$:items.mask_sack.p}}): kaçakçı.',
           'Maskeyi takarken görülürsen işe yaramaz.',
           'Maskeni çıkarırken biri görürse kimliğin açığa çıkar, ödül senin adına geçer.',
         ],
         en: [
-          '**Bandana** (30¢): general store, tailor, fence, caravan. **Sack mask** (10¢): fence.',
+          '**Bandana** ({{$:items.mask_bandana.p}}): general store, tailor, fence, caravan. **Sack mask** ({{$:items.mask_sack.p}}): fence.',
           'If someone sees you put the mask on, it is useless.',
           'If someone sees you take it off, your identity is revealed and the bounty goes to your name.',
         ],
@@ -137,8 +137,8 @@
         en: ['how do I open a locked door', 'where to buy a lockpick', 'the shop is closed what now', 'how to get into a house', 'how to break down a door'],
       },
       a: {
-        tr: 'Evler kilitlidir, dükkânlar gece kapanır. Kapıyı çalabilir, **kırabilir** ya da bir **maymuncukla** sessizce açabilirsin. Maymuncuğu kaçakçı ve seyyar satıcı satar ($1).',
-        en: 'Houses are locked and shops close at night. You can knock, **break the door down** or open it quietly with a **lockpick**. Fences and peddlers sell lockpicks ($1).',
+        tr: 'Evler kilitlidir, dükkânlar gece kapanır. Kapıyı çalabilir, **kırabilir** ya da bir **maymuncukla** sessizce açabilirsin. Maymuncuğu kaçakçı ve seyyar satıcı satar ({{$:items.lockpick.p}}).',
+        en: 'Houses are locked and shops close at night. You can knock, **break the door down** or open it quietly with a **lockpick**. Fences and peddlers sell lockpicks ({{$:items.lockpick.p}}).',
       },
       steps: {
         tr: [
@@ -183,8 +183,8 @@
         ],
       },
       tips: {
-        tr: ['**Şeytanın Ta Kendisi** başarımı (onur −80) soygunlardan 2 kat kazanç sağlar; ama onur düşükken kasaba sana sırt çevirir.'],
-        en: ['The **Devil Himself** achievement (honor −80) doubles robbery loot, though towns turn against you at low honor.'],
+        tr: ['**{{n:achievements.devil}}** başarımı: {{n:achievements.devil.perk}}. Ama onur düşükken kasabalar sana sırt çevirir.'],
+        en: ['**{{n:achievements.devil}}** achievement: {{n:achievements.devil.perk}}. Towns turn against you at low honor, though.'],
       },
       rel: ['mask', 'wanted', 'honor'],
     },
@@ -259,8 +259,8 @@
         en: ['how do I use the lasso', 'how to hogtie someone', 'pull a rider off a horse', 'how to tie up an animal', 'where to buy a lasso'],
       },
       a: {
-        tr: '**Kementi** ($1,50, silahçı) çarktan seç ve hedefe at. Yakaladığın kişiye yaklaşıp [[E]]’yi **basılı tutarak** bağlarsın. Uzaklaşırsan (at sırtında da) peşinden sürüklenir; ateş tuşu ipi bırakır.',
-        en: 'Pick the **lasso** ($1.50, gunsmith) from the wheel and throw it at a target. Walk up to someone you caught and **hold** [[E]] to hogtie them. Move away (even on horseback) and they get dragged; the fire button lets go.',
+        tr: '**Kementi** ({{$:weapons.lasso.p}}, silahçı) çarktan seç ve hedefe at. Yakaladığın kişiye yaklaşıp [[E]]’yi **basılı tutarak** bağlarsın. Uzaklaşırsan (at sırtında da) peşinden sürüklenir; ateş tuşu ipi bırakır.',
+        en: 'Pick the **lasso** ({{$:weapons.lasso.p}}, gunsmith) from the wheel and throw it at a target. Walk up to someone you caught and **hold** [[E]] to hogtie them. Move away (even on horseback) and they get dragged; the fire button lets go.',
       },
       steps: {
         tr: [
@@ -291,8 +291,8 @@
         en: ['how do I carry a body', 'how to load onto the horse', 'how to shoulder a carcass', 'I cannot run while carrying'],
       },
       a: {
-        tr: 'Cesetleri, bağlı ya da baygın kişileri, leşleri ve büyük postları **omzuna alabilir**, atının yanındayken **eyere yükleyebilirsin**. Eyer 4 birim taşır: kişi ve iri leş 2, post ve küçük leş 1.',
-        en: 'You can **shoulder** bodies, hogtied or unconscious people, carcasses and big pelts, and **load them onto your saddle** when next to your horse. The saddle holds 4 units: a person or big carcass is 2, a pelt or small carcass 1.',
+        tr: 'Cesetleri, bağlı ya da baygın kişileri, leşleri ve büyük postları **omzuna alabilir**, atının yanındayken **eyere yükleyebilirsin**. Eyer {{#:c.HORSE_CAP}} birim taşır: kişi ve iri leş 2, post ve küçük leş 1.',
+        en: 'You can **shoulder** bodies, hogtied or unconscious people, carcasses and big pelts, and **load them onto your saddle** when next to your horse. The saddle holds {{#:c.HORSE_CAP}} units: a person or big carcass is 2, a pelt or small carcass 1.',
       },
       steps: {
         tr: [
@@ -339,8 +339,8 @@
         ],
       },
       tips: {
-        tr: ['**Aziz** (onur 80): doktor yarı fiyat. **İyi Samiriyeli** (5 yardım): onur kazanımı 1,5 kat.', 'Banka kurmak için onur 10 ve üstü gerekir.'],
-        en: ['**Saint** (honor 80): doctors at half price. **Good Samaritan** (help 5 strangers): 1.5× honor gain.', 'Owning a bank needs honor 10 or more.'],
+        tr: ['**{{n:achievements.saint}}** başarımı: {{n:achievements.saint.perk}}. **{{n:achievements.samaritan}}** başarımı: {{n:achievements.samaritan.perk}}.', 'Banka kurmak için onur {{#:c.BANK.honor}} ve üstü gerekir.'],
+        en: ['**{{n:achievements.saint}}** achievement: {{n:achievements.saint.perk}}. **{{n:achievements.samaritan}}** achievement: {{n:achievements.samaritan.perk}}.', 'Owning a bank needs honor {{#:c.BANK.honor}} or more.'],
       },
       rel: ['influence', 'services', 'achievements'],
     },

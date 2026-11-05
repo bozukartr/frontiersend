@@ -50,21 +50,21 @@
       },
       steps: {
         tr: [
-          'Değerli postlar: ayı ($12), bizon ($8), puma ($7), timsah ($5), kurt ($4,25), kızıl geyik ($3).',
-          'Geyik, antilop ve çakal postu yaklaşık $1,50’dir.',
+          'Değerli postlar: ayı ({{$:items.bear_pelt.p}}), bizon ({{$:items.bison_hide.p}}), puma ({{$:items.cougar_pelt.p}}), timsah ({{$:items.gator_skin.p}}), kurt ({{$:items.wolf_pelt.p}}), kızıl geyik ({{$:items.elk_hide.p}}).',
+          'Geyik, antilop ve çakal postu yaklaşık {{$:items.deer_hide.p}}’dir.',
           'Bütün leş, derisini yüzüp parça parça satmaktan %10 daha çok getirir.',
           'Genel mağaza da post alır ama çok daha ucuza.',
         ],
         en: [
-          'Valuable pelts: bear ($12), bison ($8), cougar ($7), alligator ($5), wolf ($4.25), elk ($3).',
-          'Deer, pronghorn and coyote pelts fetch about $1.50.',
+          'Valuable pelts: bear ({{$:items.bear_pelt.p}}), bison ({{$:items.bison_hide.p}}), cougar ({{$:items.cougar_pelt.p}}), alligator ({{$:items.gator_skin.p}}), wolf ({{$:items.wolf_pelt.p}}), elk ({{$:items.elk_hide.p}}).',
+          'Deer, pronghorn and coyote pelts fetch about {{$:items.deer_hide.p}}.',
           'A whole carcass sells for 10% more than its pelt and meat sold separately.',
           'General stores buy pelts too, but for much less.',
         ],
       },
       tips: {
-        tr: ['**Avcı** başarımı (25 av) post fiyatlarını %15 artırır.', 'Bıraktığın leş uzaklaşınca bir süre sonra kaybolur.'],
-        en: ['The **Hunter** achievement (25 kills) raises pelt prices by 15%.', 'A carcass you leave behind disappears after a while once you move away.'],
+        tr: ['**{{n:achievements.hunt25}}** başarımı: {{n:achievements.hunt25.perk}}.', 'Bıraktığın leş uzaklaşınca bir süre sonra kaybolur.'],
+        en: ['**{{n:achievements.hunt25}}** achievement: {{n:achievements.hunt25.perk}}.', 'A carcass you leave behind disappears after a while once you move away.'],
       },
       rel: ['hunting', 'carry', 'trade'],
     },
@@ -109,22 +109,22 @@
         en: ['how do I fish', 'where to buy a fishing rod', 'the fish keeps escaping', 'my line snapped', 'where to buy bait', 'where are salmon'],
       },
       a: {
-        tr: 'Bir **olta** al ($2,10; genel mağaza ya da liman tüccarı). Nehir ya da göl kenarında [[E]] → **Balık Tut**. Oltayı atmak için onay tuşunu basılı tutup bırak, balık vurunca hemen bas, sonra misinayı germeden makarayı sar.',
-        en: 'Buy a **fishing rod** ($2.10; general store or dock merchant). At a river or lake press [[E]] → **Fish**. Hold and release the confirm key to cast, press it right when a fish bites, then reel in without snapping the line.',
+        tr: 'Bir **olta** al ({{$:items.fishing_rod.p}}; genel mağaza ya da liman tüccarı). Nehir ya da göl kenarında [[E]] → **Balık Tut**. Oltayı atmak için onay tuşunu basılı tutup bırak, balık vurunca hemen bas, sonra misinayı germeden makarayı sar.',
+        en: 'Buy a **fishing rod** ({{$:items.fishing_rod.p}}; general store or dock merchant). At a river or lake press [[E]] → **Fish**. Hold and release the confirm key to cast, press it right when a fish bites, then reel in without snapping the line.',
       },
       steps: {
         tr: [
           'Balık vurunca 1 saniye içinde bas; erken çekersen kaçar.',
           'Sarmak için tuşu basılı tut: balık yaklaşır ama misina gerilir. Gerilim dolarsa misina kopar.',
           'Bırakınca gerilim düşer ama balık uzaklaşır; çok uzaklaşırsa kaçar.',
-          '**Solucan yem** (4¢) beklemeyi kısaltır.',
+          '**Solucan yem** ({{$:items.bait.p}}) beklemeyi kısaltır.',
           'Soğuk kuzey sularında alabalık ve somon, sıcak güney sularında ve bataklıkta yayın balığı ve karabalık vurur.',
         ],
         en: [
           'When a fish bites, press within about a second; strike too early and it gets away.',
           'Hold the key to reel: the fish comes closer but the line tightens. If the tension maxes out, it snaps.',
           'Letting go eases the tension but the fish swims away; too far and it escapes.',
-          '**Worm bait** (4¢) shortens the wait.',
+          '**Worm bait** ({{$:items.bait.p}}) shortens the wait.',
           'Cold northern waters hold trout and salmon; warm southern waters and swamps hold catfish and bass.',
         ],
       },
@@ -143,8 +143,8 @@
         en: ['how do I find gold', 'where to buy a gold pan', 'where do I sell gold', 'gold in the river'],
       },
       a: {
-        tr: 'Bir **Altın Eleği** al ($1,50; genel mağaza, demirci, maden deposu ya da altın arayıcıları). Nehir kenarında [[E]]’yi basılı tutup **Altın Ele**. Şansın yaver giderse tanesi $10 eden **altın parçası** bulursun.',
-        en: 'Buy a **Gold Pan** ($1.50; general stores, blacksmiths, mine supply or prospectors). At a river, hold [[E]] and choose **Pan for Gold**. With luck you find **gold nuggets** worth $10 each.',
+        tr: 'Bir **Altın Eleği** al ({{$:items.gold_pan.p}}; genel mağaza, demirci, maden deposu ya da altın arayıcıları). Nehir kenarında [[E]]’yi basılı tutup **Altın Ele**. Şansın yaver giderse tanesi {{$:items.gold_nugget.p}} eden **altın parçası** bulursun.',
+        en: 'Buy a **Gold Pan** ({{$:items.gold_pan.p}}; general stores, blacksmiths, mine supply or prospectors). At a river, hold [[E]] and choose **Pan for Gold**. With luck you find **gold nuggets** worth {{$:items.gold_nugget.p}} each.',
       },
       steps: {
         tr: [
@@ -157,8 +157,8 @@
         ],
       },
       tips: {
-        tr: ['**Altına Hücum** başarımı (10 altın parçası) eleme verimini 2 katına çıkarır.'],
-        en: ['The **Gold Rush** achievement (10 nuggets) doubles your panning yield.'],
+        tr: ['**{{n:achievements.gold}}** başarımı: {{n:achievements.gold.perk}}.'],
+        en: ['**{{n:achievements.gold}}** achievement: {{n:achievements.gold.perk}}.'],
       },
       rel: ['ore', 'money', 'trade'],
     },
@@ -171,8 +171,8 @@
         en: ['how do I mine ore', 'where to buy a pickaxe', 'where to find silver', 'how to work in the mine', 'abandoned mine'],
       },
       a: {
-        tr: 'Bir **kazma** al ($2,50) ve kayalık yerlerdeki **cevher kayalarının** yanında [[E]] ile kaz. Demir ve gümüş cevheri çıkar; gümüş daha değerlidir.',
-        en: 'Buy a **pickaxe** ($2.50) and dig at **ore rocks** on rocky ground with [[E]]. You get iron and silver ore; silver is worth more.',
+        tr: 'Bir **kazma** al ({{$:items.pickaxe.p}}) ve kayalık yerlerdeki **cevher kayalarının** yanında [[E]] ile kaz. Demir ve gümüş cevheri çıkar; gümüş daha değerlidir.',
+        en: 'Buy a **pickaxe** ({{$:items.pickaxe.p}}) and dig at **ore rocks** on rocky ground with [[E]]. You get iron and silver ore; silver is worth more.',
       },
       steps: {
         tr: [
@@ -217,8 +217,8 @@
         ],
       },
       tips: {
-        tr: ['**Şifacı** başarımı (50 bitki) toplarken 2 kat verim şansı verir.', 'Kır çiçeği güzel bir hediyedir.'],
-        en: ['The **Healer** achievement (50 herbs) gives a chance of double yield.', 'Wildflowers make a nice gift.'],
+        tr: ['**{{n:achievements.herbs}}** başarımı: {{n:achievements.herbs.perk}}.', 'Kır çiçeği güzel bir hediyedir.'],
+        en: ['**{{n:achievements.herbs}}** achievement: {{n:achievements.herbs.perk}}.', 'Wildflowers make a nice gift.'],
       },
       rel: ['cooking', 'medicine', 'romance'],
     },
@@ -236,14 +236,14 @@
       },
       steps: {
         tr: [
-          'Kürek ($2,10) genel mağaza, demirci ve altın arayıcılarında satılır.',
-          'Hazineden para, değerli eşya ve bazen bir **altın külçe** ($300) çıkar.',
+          'Kürek ({{$:items.shovel.p}}) genel mağaza, demirci ve altın arayıcılarında satılır.',
+          'Hazineden para, değerli eşya ve bazen bir **altın külçe** ({{$:items.gold_bar.p}}) çıkar.',
           'Koleksiyon eşyaları: ok ucu, dinozor kemiği, göktaşı parçası, eski sikke, sigara kartı.',
           'Koleksiyon eşyalarını en iyi kervan, münzevi ve kaçakçı alır.',
         ],
         en: [
-          'Shovels ($2.10) are sold at general stores, blacksmiths and prospectors.',
-          'Treasure holds cash, valuables and sometimes a **gold bar** ($300).',
+          'Shovels ({{$:items.shovel.p}}) are sold at general stores, blacksmiths and prospectors.',
+          'Treasure holds cash, valuables and sometimes a **gold bar** ({{$:items.gold_bar.p}}).',
           'Collectibles: arrowheads, dinosaur bones, meteorite fragments, old coins, cigarette cards.',
           'Caravans, the hermit and the fence pay best for collectibles.',
         ],
@@ -271,18 +271,18 @@
           '**Sıcak Kaynaklar**’da dinlenmek canını doldurur, seni temizler ve ısıtır.',
           'Deniz fenerine tırmanınca kıyı haritası açılır.',
           'Harabeleri arayabilir, terk edilmiş madene fenerle girebilirsin.',
-          'Saloonda söylenti dinlemek (10¢) bilinmeyen bir yeri haritada işaretler.',
+          'Saloonda söylenti dinlemek ({{$:svc.rumor}}) bilinmeyen bir yeri haritada işaretler.',
         ],
         en: [
           'Resting at the **Hot Springs** restores health, cleans you and warms you up.',
           'Climbing the lighthouse reveals the coastline on your map.',
           'You can search ruins and enter the abandoned mine with a lantern.',
-          'Listening for rumors at a saloon (10¢) marks an unknown place on your map.',
+          'Listening for rumors at a saloon ({{$:svc.rumor}}) marks an unknown place on your map.',
         ],
       },
       tips: {
-        tr: ['**Meraklı Gezgin** (5 yer) haritanın açılma yarıçapını büyütür; **Kâşif** (20 yer) yakındaki keşfedilmemiş yerleri “?” ile gösterir.'],
-        en: ['**Curious Wanderer** (5 places) widens how much of the map you reveal; **Explorer** (20 places) shows nearby undiscovered places as “?”.'],
+        tr: ['**{{n:achievements.explore5}}** başarımı: {{n:achievements.explore5.perk}}. **{{n:achievements.explore20}}** başarımı: {{n:achievements.explore20.perk}}.'],
+        en: ['**{{n:achievements.explore5}}** achievement: {{n:achievements.explore5.perk}}. **{{n:achievements.explore20}}** achievement: {{n:achievements.explore20.perk}}.'],
       },
       rel: ['map', 'binoculars', 'treasure'],
     },
@@ -295,8 +295,8 @@
         en: ['how to use binoculars', 'where to buy binoculars', 'how can I see far away'],
       },
       a: {
-        tr: '**Dürbün** ($5,75; genel mağaza, silahçı, kervan, altın arayıcıları) çarktan ya da çantadan kullanılır. Durup uzağa bakarsın; hayvanların ve dikkat çeken insanların adları yazar, gördüğün yerler haritada işaretlenir.',
-        en: '**Binoculars** ($5.75; general store, gunsmith, caravan, prospectors) are used from the wheel or satchel. Stand still and look far ahead; animals and notable people are labeled, and places you spot get marked on your map.',
+        tr: '**Dürbün** ({{$:items.binoculars.p}}; genel mağaza, silahçı, kervan, altın arayıcıları) çarktan ya da çantadan kullanılır. Durup uzağa bakarsın; hayvanların ve dikkat çeken insanların adları yazar, gördüğün yerler haritada işaretlenir.',
+        en: '**Binoculars** ({{$:items.binoculars.p}}; general store, gunsmith, caravan, prospectors) are used from the wheel or satchel. Stand still and look far ahead; animals and notable people are labeled, and places you spot get marked on your map.',
       },
       steps: {
         tr: [

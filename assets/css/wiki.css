@@ -190,6 +190,15 @@ kbd {
 .ghost .ico { width: 16px; height: 16px; }
 .ghost:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
 
+/* ---------- veri sayfaları: bilgi tablosu ve bağlantılar ---------- */
+.facts { margin: 16px 0 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.facts > div { display: grid; grid-template-columns: minmax(120px, 34%) 1fr; gap: 14px; padding: 9px 2px; border-bottom: 1px solid var(--line); }
+.facts dt { margin: 0; font-size: 13.5px; font-weight: 650; color: var(--muted); line-height: 1.55; }
+.facts dd { margin: 0; font-size: 15px; line-height: 1.55; overflow-wrap: anywhere; }
+a.ent { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent); text-underline-offset: 2px; }
+a.ent:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.dbnote { margin: 18px 0 0; font-size: 13px; line-height: 1.55; color: var(--faint); }
+
 /* ---------- tüm konular ---------- */
 .topics h1 { margin: 0 4px 16px; font-size: 24px; }
 .cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
@@ -200,6 +209,14 @@ kbd {
 .catbox ul { margin: 0; padding: 0; list-style: none; }
 .catbox li a { display: block; padding: 5px 0; color: var(--text); text-decoration: none; font-size: 14.5px; }
 .catbox li a:hover { color: var(--accent); }
+.dbhead { margin: 30px 4px 4px; font-size: 20px; }
+.dbhint { margin: 0 4px 14px; font-size: 14px; color: var(--muted); }
+.catbox.db h3 { margin: 12px 0 4px; font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--faint); }
+.catbox.db h3:first-of-type { margin-top: 4px; }
+.inl { margin: 0; font-size: 14.5px; line-height: 1.75; }
+.inl a { color: var(--text); text-decoration: none; }
+.inl a:hover { color: var(--accent); }
+.inl .sep { color: var(--faint); }
 
 /* ---------- alt bilgi, bildirim ---------- */
 .foot { text-align: center; padding: 26px 16px 34px; font-size: 13px; color: var(--faint); }
@@ -223,8 +240,10 @@ kbd {
   .card { padding: 18px; }
   .article { padding: 20px 18px; }
   .article h1 { font-size: 24px; }
+  .facts > div { grid-template-columns: 1fr; gap: 2px; }
   .suggest li .c { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+.dbcats #cat-db-item, .dbcats #cat-db-ach { grid-column: 1 / -1; }
