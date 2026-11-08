@@ -93,6 +93,8 @@
     collectible: { tr: ['koleksiyon', 'ok ucu', 'dinozor', 'dinozor kemiği', 'göktaşı', 'eski sikke', 'sigara kartı', 'değerli eşya'], en: ['collectible', 'collectibles', 'arrowhead', 'dinosaur', 'dinosaur bone', 'meteorite', 'old coin', 'cigarette card', 'valuables'] },
     explore: { tr: ['keşif', 'keşfet', 'önemli yer', 'yerler', 'gez', 'harabe', 'deniz feneri', 'kaplıca', 'sıcak kaynak', 'krater'], en: ['explore', 'exploring', 'discover', 'landmark', 'landmarks', 'places', 'ruins', 'lighthouse', 'hot spring', 'hot springs', 'crater'] },
     binoculars: { tr: ['dürbün', 'uzağı gör'], en: ['binoculars', 'spyglass', 'scope', 'see far'] },
+    legend: { tr: ['efsane', 'efsanevi', 'efsanevi hayvan', 'efsanevi balık', 'nadir hayvan', 'ak hayalet', 'beyaz kurt', 'yaralı pençe', 'altın gölge', 'taç boynuz', 'demir boynuz', 'yaşlı diş', 'gölün hayaleti', 'bakır pul', 'yaşlı bıyık', 'demir çene', 'arama çemberi'], en: ['legend', 'legends', 'legendary', 'legendary animal', 'legendary fish', 'rare animal', 'pale ghost', 'white wolf', 'scarclaw', 'golden shadow', 'crownhorn', 'ironhorn', 'old tooth', 'lake ghost', 'copperscale', 'old whiskers', 'ironjaw', 'search circle'], rel: ['hunt', 'fish'] },
+    tailorcraft: { tr: ['postundan diktir', 'diktir', 'terzi siparişi', 'heybe', 'heybe büyüt', 'eyer büyüt', 'saraç', 'çanta büyüt'], en: ['sew', 'sewn', 'tailor order', 'saddlebags', 'saddlebag', 'saddler', 'upgrade satchel', 'bigger satchel'], rel: ['clothing', 'pelt'] },
 
     /* ---- Para ---- */
     money: { tr: ['para', 'dolar', 'sent', 'nakit', 'servet', 'zengin', 'gelir', 'kazanç', 'cüzdan', 'kâr'], en: ['money', 'cash', 'dollar', 'dollars', 'cent', 'cents', 'wealth', 'rich', 'income', 'profit', 'wallet'] },

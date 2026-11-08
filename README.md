@@ -64,8 +64,12 @@ sandıkları, başarımlar, işler, mülkler, hayatta kalma kuralları…) ve İ
   değerlerden sade biçimde kurulur, bilgi tablosu oyunun değerlerini gösterir.
 - **Makalelerdeki sayılar** yer tutucudur: `{{$:items.bedroll.p}}` sayfada `$4,25` (İngilizcede `$4.25`) olur.
   Biçimler: `$` para, `$-` para aralığı, `#` sayı, `#-` sayı aralığı, `%` kesirden yüzde (0,25 → %25),
-  `%#` hazır yüzde, `x` çarpan (×1,4), `n` ad. Yol `game.js` içindeki değerdir; dizilerde sıra ya da kimlik
-  kullanılır (`c.LIFE_PACES.0.dpy`, `recipes.arrows.need.feather`, `achievements.towns.perk`).
+  `%#` hazır yüzde, `x` çarpan (×1,4), `n` ad, `s` dile göre değişmeyen düz metin (bölge adı). Yol `game.js` içindeki
+  değerdir; dizilerde sıra ya da kimlik kullanılır (`c.LIFE_PACES.0.dpy`, `recipes.arrows.need.feather`,
+  `achievements.towns.perk`, `legends.ghost.region`, `satchel.1.mul`).
+- Efsanevi hayvan ve balıklardan çıkan eşyaların ve terzinin diktiği giysilerin sayfaları da veriden kurulur:
+  nereden çıktığı (efsane ya da terzi siparişi ve gerekenleri), hangi siparişte kullanıldığı ve giysinin ek
+  etkileri (yağmur geçirmezlik, hayvanların fark etmesi, hayvan saldırısı, Odak, dayanıklılık, yılan zehri).
 - Oyunda bir değer değişince oyun deposunda `node tools/wiki-export.js` çalıştırılır (wiki deposu oyunun yanında
   klonlu olmalı) ve değişen `game.js` buraya gönderilir. Oyunun testi (`tests/e2e/wikidata.test.js`), wiki
   deposu yanındaysa buradaki kopyanın eski kaldığını yakalar; buradaki test de çözülemeyen yer tutucuyu,

@@ -165,6 +165,40 @@
       rel: ['temperature', 'clean', 'mask'],
     },
     {
+      id: 'crafting', cat: 'town', tags: ['tailorcraft', 'clothing', 'pelt', 'satchel'],
+      title: { tr: 'Postundan diktir: giysi, heybe ve eyer', en: 'Sew from your pelts: garments, saddlebags and saddles' },
+      chip: { tr: 'Postundan Diktir', en: 'Sew From Pelts' },
+      q: {
+        tr: ['postlarla ne yapılır', 'terziye post götürmek', 'heybe nasıl büyütülür', 'eyer nasıl büyütülür', 'kurt postundan palto', 'efsanevi giysi nasıl yapılır'],
+        en: ['what can I do with pelts', 'bring pelts to the tailor', 'how to upgrade saddlebags', 'how to upgrade the saddle', 'wolf pelt coat', 'how to make a legendary garment'],
+      },
+      a: {
+        tr: 'Postlar satmanın ötesinde işe yarar: kasabadaki **terzide** **Postundan Diktir** de. Terzi kendi postundan dükkânda bulunmayan giysiler diker ve heybeni büyütür; ahırdaki **saraç** eyerini büyütür.',
+        en: 'Pelts are good for more than selling: ask a town **tailor** to **Sew From Your Pelts**. The tailor makes garments no shop carries from your own pelts and enlarges your saddlebags; the **saddler** at the stable enlarges your saddle.',
+      },
+      steps: {
+        tr: [
+          'Postlar çantandan, omzundan ya da kapıdaki atının eyerinden alınır; ücret peşin. Sipariş birkaç saatte hazır olur, hazır olunca haber gelir; aynı kasabanın terzisinden (eyerde ahırından) teslim alırsın.',
+          'Giysiler: **{{n:items.coat_buck}}** ({{$:tailor.coat_buck.fee}}), **{{n:items.coat_wolf}}** ({{$:tailor.coat_wolf.fee}}), **{{n:items.coat_cougar}}**, **{{n:items.coat_gator}}**, **{{n:items.coat_bison}}**, **{{n:items.coat_bear}}**. Her birinin sıcaklığı ve ek etkisi kendi sayfasında.',
+          'Her efsanevi posttan eşsiz bir giysi: **{{n:items.coat_lg_ghost}}**, **{{n:items.coat_lg_scar}}**, **{{n:items.coat_lg_gold}}**, **{{n:items.coat_lg_crown}}**, **{{n:items.coat_lg_iron}}**, **{{n:items.coat_lg_tooth}}**.',
+          'Heybe: **{{n:satchel.1}}** {{x:satchel.1.mul}}, **{{n:satchel.2}}** {{x:satchel.2.mul}}, **{{n:satchel.3}}** {{x:satchel.3.mul}}. Yiyecek, ilaç, bitki, av ürünü, değerli ve koleksiyon eşyalarının taşıma sınırını büyütür; sırayla diktirilir.',
+          'Eyer (saraç): **{{n:saddle.1}}** {{#:saddle.1.cap}}, **{{n:saddle.2}}** {{#:saddle.2.cap}} birim yük taşır (başta {{#:c.HORSE_CAP}}).',
+        ],
+        en: [
+          'Pelts are taken from your satchel, your shoulder or your horse’s saddle at the door; the fee is paid up front. An order is ready in a few hours, you are told when it is, and you pick it up from the same town’s tailor (or stable, for a saddle).',
+          'Garments: **{{n:items.coat_buck}}** ({{$:tailor.coat_buck.fee}}), **{{n:items.coat_wolf}}** ({{$:tailor.coat_wolf.fee}}), **{{n:items.coat_cougar}}**, **{{n:items.coat_gator}}**, **{{n:items.coat_bison}}**, **{{n:items.coat_bear}}**. Each one’s warmth and extra effect is on its own page.',
+          'A unique garment from every legendary pelt: **{{n:items.coat_lg_ghost}}**, **{{n:items.coat_lg_scar}}**, **{{n:items.coat_lg_gold}}**, **{{n:items.coat_lg_crown}}**, **{{n:items.coat_lg_iron}}**, **{{n:items.coat_lg_tooth}}**.',
+          'Saddlebags: **{{n:satchel.1}}** {{x:satchel.1.mul}}, **{{n:satchel.2}}** {{x:satchel.2.mul}}, **{{n:satchel.3}}** {{x:satchel.3.mul}}. They raise the carry limit of food, medicine, herbs, animal goods, valuables and collectibles; sewn in order.',
+          'Saddle (saddler): **{{n:saddle.1}}** {{#:saddle.1.cap}}, **{{n:saddle.2}}** {{#:saddle.2.cap}} load units (from {{#:c.HORSE_CAP}}).',
+        ],
+      },
+      tips: {
+        tr: ['Bir sipariş bitmeden aynısı verilmez; sende olan giysi yeniden diktirilmez.', '{{n:achievements.tailor}} başarımı siparişleri hızlandırır.'],
+        en: ['You can’t place the same order twice before it’s done, or re-order a garment you already have.', 'The {{n:achievements.tailor}} achievement makes orders faster.'],
+      },
+      rel: ['clothes', 'pelts', 'legends', 'satchel'],
+    },
+    {
       id: 'towns', cat: 'town', tags: ['town', 'travel'],
       title: { tr: 'Kasabalar ve gelişimleri', en: 'Towns and how they grow' },
       chip: { tr: 'Kasabalar', en: 'Towns' },
