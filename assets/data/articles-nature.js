@@ -135,6 +135,58 @@
       rel: ['cooking', 'money', 'achievements'],
     },
     {
+      id: 'legends', cat: 'nature', tags: ['legend'],
+      title: { tr: 'Efsaneler: nadir av ve balıklar', en: 'Legends of the wild' },
+      chip: { tr: 'Efsaneler', en: 'Legends' },
+      q: {
+        tr: ['efsanevi hayvanlar nerede', 'beyaz kurt nerede', 'efsanevi balık nasıl tutulur', 'efsane söylentisi nereden duyulur', 'arama çemberi nedir', 'efsanevi post ne işe yarar'],
+        en: ['where are the legendary animals', 'where is the white wolf', 'how to land a legendary catch', 'where to hear legend rumors', 'what is the search circle', 'what are legendary pelts for'],
+      },
+      a: {
+        tr: 'Dünyada birkaç gerçekten nadir yer var: altı **efsanevi hayvanın** ini ve dört **efsanevi balığın** suyu. Her biri yalnızca belli bir saatte ya da havada görünür ve bir hayatta bir kez avlanır ya da tutulur. Söylentiyle başla, izleri takip et, inini bul.',
+        en: 'The world holds a few truly rare places: the lairs of six **legendary animals** and the waters of four **legendary fish**. Each shows itself only at a certain hour or in certain weather and can be hunted or caught once per life. Start with a rumor, follow the signs, find the lair.',
+      },
+      steps: {
+        tr: [
+          '**Söylenti**: barmen ve münzevi arada bir efsane anlatır, gazetenin av köşesinde de çıkabilir. Tuzakçı kulübesinde **Av Efsanelerini Sor**, liman deposunda **Balıkçı Efsanelerini Dinle** ({{$:svc.tales}}) bir efsaneyi kesin anlatır. Haritanda bir arama çemberi açılır.',
+          '**İzler**: inin çevresinde üç iz var (tüy tutamı, pençe izi, yarım leş, sürünme izi). Yanında [[E]] basılı tutup **İzi İncele**: her iz çemberi daraltır, üçüncüsünde in haritaya işlenir.',
+          '**Vakit**: efsane yalnızca vakti gelince ininin yakınında belirir. Vakti değilken ine varırsan ne zaman geldiği söylenir.',
+          '**Av**: derisini yüz. Eşsiz post (büyükleri omza alınır, yere bıraksan da kaybolmaz), iki kat et ve dördünden ganimet verir. Kemente dayanmaz.',
+          '**Efsanevi balık**: kendi suyunda ve vaktinde olta vurursa çoğu zaman odur. Çok sert çeker; **Kaçmaya çalışıyor!** yazınca makarayı bırak. Hep sararsan misina kopar ve o gün bir daha vurmaz.',
+        ],
+        en: [
+          '**Rumors**: the bartender and the hermit now and then tell of a legend, and one may turn up in the newspaper’s hunting column. At a trapper’s cabin **Ask About Hunting Legends**, at the dock warehouse **Hear the Anglers’ Legends** ({{$:svc.tales}}) for a sure tale. A search circle opens on your map.',
+          '**Signs**: three signs lie around each lair (a tuft of fur, claw marks, a half-eaten carcass, a drag mark). Hold [[E]] beside one to **Examine the Sign**: each narrows the circle and the third marks the lair on your map.',
+          '**Hour**: a legend appears near its lair only when its hour comes. Reach the lair at the wrong time and you learn when it comes.',
+          '**The hunt**: skin it. You get a one-of-a-kind pelt (large ones go on your shoulder and never vanish, even set down), double meat and, from four of them, a trophy. No lasso holds it.',
+          '**Legendary catch**: a bite in its own waters at its hour is usually the legend. It pulls very hard; when **It’s making a run!** appears, let the reel go. Keep reeling and the line snaps, and it won’t bite again that day.',
+        ],
+      },
+      tips: {
+        tr: [
+          '**{{n:legends.ghost}}**: {{s:legends.ghost.region}}, {{n:legendWhen.night}}. Dev beyaz kurt; üç kurtluk sürüsüyle gelir, vurup çekilir.',
+          '**{{n:legends.scar}}**: {{s:legends.scar.region}}, {{n:legendWhen.day}}. Dev boz ayı; canı yarıya inince kudurur.',
+          '**{{n:legends.gold}}**: {{s:legends.gold.region}}, {{n:legendWhen.dawn}} ya da {{n:legendWhen.dusk}}. Altın tüylü puma; yaralanınca çekilip yeniden saldırır.',
+          '**{{n:legends.crown}}**: {{s:legends.crown.region}}, {{n:legendWhen.dawn}} ya da {{n:legendWhen.fog}}. Dev kızıl geyik; çok ürkek, kaçarsa o gün dönmez.',
+          '**{{n:legends.iron}}**: {{s:legends.iron.region}}, {{n:legendWhen.day}}. Kara bizon boğası; vurulunca kaçmaz, saldırır.',
+          '**{{n:legends.tooth}}**: {{s:legends.tooth.region}}, {{n:legendWhen.night}} ya da {{n:legendWhen.rain}}. Bataklığın en yaşlı timsahı.',
+          'Sular: **{{n:legendFish.lakeghost}}** ({{s:legendFish.lakeghost.region}}, {{n:legendWhen.night}}), **{{n:legendFish.copper}}** ({{s:legendFish.copper.region}}, {{n:legendWhen.dawn}}), **{{n:legendFish.whisker}}** ({{s:legendFish.whisker.region}}, {{n:legendWhen.rain}}), **{{n:legendFish.jaw}}** ({{s:legendFish.jaw.region}}, {{n:legendWhen.dusk}}).',
+          'Terzi her efsanevi posttan eşsiz bir giysi diker. Başarımlar: {{n:achievements.legend1}}, {{n:achievements.legend6}}, {{n:achievements.legendfish}}.',
+        ],
+        en: [
+          '**{{n:legends.ghost}}**: {{s:legends.ghost.region}}, {{n:legendWhen.night}}. A giant white wolf; comes with a pack of three, strikes and pulls back.',
+          '**{{n:legends.scar}}**: {{s:legends.scar.region}}, {{n:legendWhen.day}}. A giant grizzly; enraged once half its life is gone.',
+          '**{{n:legends.gold}}**: {{s:legends.gold.region}}, {{n:legendWhen.dawn}} or {{n:legendWhen.dusk}}. A golden-furred cougar; wounded, it slips away and strikes again.',
+          '**{{n:legends.crown}}**: {{s:legends.crown.region}}, {{n:legendWhen.dawn}} or {{n:legendWhen.fog}}. A giant elk; very skittish, once it flees it won’t return that day.',
+          '**{{n:legends.iron}}**: {{s:legends.iron.region}}, {{n:legendWhen.day}}. A black bison bull; shot, it doesn’t run but charges.',
+          '**{{n:legends.tooth}}**: {{s:legends.tooth.region}}, {{n:legendWhen.night}} or {{n:legendWhen.rain}}. The swamp’s oldest alligator.',
+          'Waters: **{{n:legendFish.lakeghost}}** ({{s:legendFish.lakeghost.region}}, {{n:legendWhen.night}}), **{{n:legendFish.copper}}** ({{s:legendFish.copper.region}}, {{n:legendWhen.dawn}}), **{{n:legendFish.whisker}}** ({{s:legendFish.whisker.region}}, {{n:legendWhen.rain}}), **{{n:legendFish.jaw}}** ({{s:legendFish.jaw.region}}, {{n:legendWhen.dusk}}).',
+          'A tailor sews a unique garment from every legendary pelt. Achievements: {{n:achievements.legend1}}, {{n:achievements.legend6}}, {{n:achievements.legendfish}}.',
+        ],
+      },
+      rel: ['hunting', 'fishing', 'crafting', 'predators'],
+    },
+    {
       id: 'gold', cat: 'nature', tags: ['gold', 'money', 'buy'],
       title: { tr: 'Altın eleme', en: 'Panning for gold' },
       chip: { tr: 'Altın', en: 'Gold' },

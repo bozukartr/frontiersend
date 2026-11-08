@@ -64,8 +64,9 @@
     '%#': (v, L) => (isNum(v) ? pct(v, L) : null),
     'x': (v, L) => (isNum(v) ? '×' + num(v, L) : null),
     'n': (v, L) => { const o = v && v.n ? v.n : v; return o && typeof o[L] === 'string' ? o[L] : null; },
+    's': (v) => (typeof v === 'string' && v ? v : null),   // dile göre değişmeyen düz metin (ör. bölge adı)
   };
-  const PH = /\{\{([$#%xn-]{1,2}):([\w.]+)\}\}/g;
+  const PH = /\{\{([$#%xns-]{1,2}):([\w.]+)\}\}/g;
   function fillText(s, G, L, errs) {
     return String(s).replace(PH, (m, f, p) => {
       const out = FMT[f] ? FMT[f](get(G, p), L) : null;
@@ -148,6 +149,17 @@
     silver_ore: [T2('Cevher kayalarından kazılan, demirden değerli bir maden.', 'An ore mined from ore rocks, worth more than iron.'), 'ore'],
     gold_nugget: [T2('Değerli bir altın parçası; satıp para kazanırsın.', 'A valuable gold nugget you can sell.'), 'gold'],
   };
+  /* giysinin oyundaki ek etkileri (js/legends.js coatFx): çarpanlar yüzdeye çevrilir */
+  const P100 = (v) => Math.round(Math.abs(1 - v) * 100);
+  const COAT_FX = [
+    ['rain', (v, L) => (L === 'tr' ? 'Yağmur geçirmez' : 'Rainproof')],
+    ['scent', (v, L) => (L === 'tr' ? `Hayvanlar %${P100(v)} geç fark eder` : `Animals notice you ${P100(v)}% later`)],
+    ['guard', (v, L) => (L === 'tr' ? `Hayvan saldırısı %${P100(v)} az yaralar` : `Animal attacks wound ${P100(v)}% less`)],
+    ['aggro', (v, L) => (L === 'tr' ? `Saldırgan hayvanlar %${P100(v)} daha yakından saldırır` : `Hostile animals charge from ${P100(v)}% closer`)],
+    ['sta', (v, L) => (L === 'tr' ? `Koşarken dayanıklılık %${P100(v)} yavaş tükenir` : `Stamina drains ${P100(v)}% slower while running`)],
+    ['de', (v, L) => (L === 'tr' ? `Odak %${P100(v)} yavaş tükenir` : `Focus drains ${P100(v)}% slower`)],
+    ['venom', (v, L) => (L === 'tr' ? 'Yılan sokması zehirlemez' : 'Snakebites don’t poison you')],
+  ];
   /* tablolarda olmayan elde etme yolları */
   const SRC = {
     gold_nugget: [T2('Altın eleyerek', 'Gold panning'), 'gold'],
@@ -249,6 +261,12 @@
     }
     for (const [jid, J] of Object.entries(G.jobs)) for (const [id] of J.bonus || []) (jobsFor[id] = jobsFor[id] || []).push(jid);
     for (const [pool, ids] of Object.entries(G.fish)) for (const id of ids) (fished[id] = fished[id] || []).push(pool);
+    // efsanelerden çıkanlar (post, ganimet, balık); terzinin diktikleri ve siparişlerde kullanılan postlar
+    const legendSrc = {}, tailored = {}, tailorUse = {}, tierUse = {};
+    for (const Lg of Object.values(G.legends || {})) for (const x of [Lg.pelt, Lg.trophy].filter(Boolean)) legendSrc[x] = Lg;
+    for (const F of Object.values(G.legendFish || {})) legendSrc[F.item] = F;
+    for (const R of G.tailor || []) { tailored[R.id] = R; for (const x of Object.keys(R.need)) (tailorUse[x] = tailorUse[x] || []).push(R); }
+    for (const S of [...(G.satchel || []), ...(G.saddle || [])]) for (const x of Object.keys(S.need || {})) (tierUse[x] = tierUse[x] || []).push(S);
     const gather = new Set(G.gather || []), ore = new Set(G.ore || []);
 
     const page = (kind, key, n, lead, rows, rel, extra) => {
@@ -284,6 +302,8 @@
         }
         if (parts.length) s.push(cap(list(parts, L), L) + '.');
         if (it.warm) s.push(L === 'tr' ? `Giyince seni ${num(Math.abs(it.warm), L)} °C ${it.warm > 0 ? 'ısıtır' : 'serinletir'}.` : `Keeps you ${num(Math.abs(it.warm), L)} °C ${it.warm > 0 ? 'warmer' : 'cooler'}.`);
+        if (it.made) s.push(L === 'tr' ? 'Dükkânda satılmaz; terzi senin postundan diker.' : 'No shop sells it; a tailor sews it from your own pelts.');
+        if (legendSrc[id]) s.push(L === 'tr' ? `Efsanevi bir avdan çıkar; her hayatta yalnızca bir tane.` : `Comes from a legendary quarry; only one per life.`);
         if (note && (note[2] === 'add' || !s.length)) s.push(note[0][L]);
         if (!s.length) s.push((it.hat ? HAT : IDEF[it.c] || T2('', ''))[L]);
         if (it.raw && it.cook && items[it.cook]) s.push(L === 'tr' ? `Çiğ yenirse hasta edebilir; pişirince ${iLink(it.cook, L)} olur.` : `Eating it raw can make you sick; cook it to get ${iLink(it.cook, L)}.`);
@@ -293,6 +313,7 @@
       const eff = joined(L => [
         ...Object.entries(it.e || {}).filter(([k, v]) => EFF[k] && EFF[k].l && isNum(v)).map(([k, v]) => `${EFF[k].l[L]} ${v > 0 ? '+' : ''}${num(v, L)}`),
         ...(it.warm ? [`${EFF.warmth.l[L]} ${it.warm > 0 ? '+' : ''}${num(it.warm, L)} °C`] : []),
+        ...COAT_FX.filter(([k]) => it[k] !== undefined).map(([k, f]) => f(it[k], L)),
       ]);
       const sellers = sellersOf(id, 'sell');
       const src = both(L => {
@@ -302,6 +323,8 @@
         if (gather.has(id)) s.push(it.c === 'herb' ? link(L === 'tr' ? 'Doğada toplanır' : 'Gathered in the wild', 'herbs') : (L === 'tr' ? 'Doğada toplanır' : 'Gathered in the wild'));
         if (ore.has(id)) s.push(link(L === 'tr' ? 'Cevher kayası kazarak' : 'Mining ore rocks', 'ore'));
         if (SRC[id]) s.push(link(SRC[id][0][L], SRC[id][1]));
+        if (legendSrc[id]) s.push(link((L === 'tr' ? 'Efsane: ' : 'Legend: ') + legendSrc[id].n[L], 'legends'));
+        if (tailored[id]) s.push(link(L === 'tr' ? 'Terzi diker' : 'Sewn by a tailor', 'crafting') + ': ' + Object.entries(tailored[id].need).map(([x, n]) => (n > 1 ? n + ' ' : '') + iLink(x, L)).join(' + ') + ' + ' + money(tailored[id].fee, L));
         for (const r of crafted[id] || []) s.push((L === 'tr' ? 'Yapılır: ' : 'Crafted: ') + Object.entries(r.need).map(([x, n]) => (n > 1 ? n + ' ' : '') + iLink(x, L)).join(' + '));
         for (const j of jobsFor[id] || []) s.push((L === 'tr' ? 'İş: ' : 'Job: ') + link(G.jobs[j].n[L], 'jobs'));
         if (chests[id]) s.push((L === 'tr' ? 'Sandık: ' : 'Chest: ') + chests[id].map(l => link(l.n[L], 'place-' + l.id)).join(', '));
@@ -318,12 +341,12 @@
         ['soldAt', joined(L => placesFor(sellers, L))],
         ['get', src],
         ['sell', joined(L => buyers.map(([s, v]) => `${shops[s].n[L]} ≈ ${money(v, L)}`))],
-        ['usedIn', joined(L => (usedIn[id] || []).map(r => {
+        ['usedIn', joined(L => [...(usedIn[id] || []).map(r => {
           const o = Object.keys(r.out || {})[0];
           return o ? link(r.n[L], 'item-' + o) : r.n[L];
-        }))],
+        }), ...(tailorUse[id] || []).map(R => iLink(R.id, L)), ...(tierUse[id] || []).map(S => link(S.n[L], 'crafting'))])],
         ['max', both(L => num(it.max, L))],
-      ], [note && note[1], IREL[it.c], it.raw || it.cook ? 'cooking' : null], { group: it.c });
+      ], [note && note[1], legendSrc[id] ? 'legends' : null, it.made || tailorUse[id] ? 'crafting' : null, IREL[it.c], it.raw || it.cook ? 'cooking' : null], { group: it.c });
     }
 
     /* ---------- silahlar ---------- */
